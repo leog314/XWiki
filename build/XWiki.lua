@@ -1105,15 +1105,16 @@ end
 function HomeScreen:backspaceKey()
     if self.search_bar.text ~= self.placeholder and self.search_bar.text ~= "" then
         self.search_bar.text = self.search_bar.text:sub(1, #self.search_bar.text-1)
-        self:updateSearch()
     end
     if self.search_bar.text == "" then
         self.search_bar.text = self.placeholder
     end
+    self:updateSearch()
 end
 
 function HomeScreen:clearKey()
     self.search_bar.text = self.placeholder
+    self:updateSearch()
 end
 
 function HomeScreen:enterKey()
