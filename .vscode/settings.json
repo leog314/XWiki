@@ -1,0 +1,13 @@
+{
+    "Lua.diagnostics.globals": [
+        "on",
+        "gc",
+        "platform",
+        "D2Editor",
+        "database"
+    ],
+    "editor.selectionClipboard": false,
+    "Lua.diagnostics.disable": [
+        "param-type-mismatch"
+    ],
+}
