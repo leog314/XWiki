@@ -1000,10 +1000,13 @@ colors["rect"] = {10, 10, 10}
 colors["rect-activated"] = {48, 213, 200}
 local white_mode = true
 
+local currentScreen = nil -- some dummy initialisation
 
 -----------------------------------------
 -------------- Screen classes -----------
 -----------------------------------------
+
+------------- HomeScreen class ----------
 
 HomeScreen = class()
 
@@ -1118,6 +1121,18 @@ function HomeScreen:clearKey()
 end
 
 function HomeScreen:enterKey()
+    if #self.articles ~= 0 then
+        if self.pointer ~= 0 then
+            currentScreen = ReadScreen(self.articles[self.pointer])
+        else
+            for key, _ in pairs(database) do
+                if key==self.search_bar.text then
+                    currentScreen = ReadScreen(key)
+                end
+            end
+            currentScreen = ReadScreen(self.articles[1])
+        end
+    end
     self.search_bar.text = self.placeholder -- +redirect
 end
 
@@ -1131,12 +1146,90 @@ function HomeScreen:arrowKey(key)
     end
 end
 
+function HomeScreen:escapeKey()
+    self.pointer = 0
+end
+
+----------- "TextScreen" class ----------
+
+ReadScreen = class()
+
+function ReadScreen:init(keyword)
+    self.keyword = keyword
+
+    self.editor_params = {x0=0.1*pww(), y0=0.2*pwh(), x1=0.9*pww(), y1=0.9*pwh()}
+    self.editor = D2Editor:newRichText():move(self.editor_params.x0, self.editor_params.y0):
+    resize(self.editor_params.x1-self.editor_params.x0, self.editor_params.y1-self.editor_params.y0):
+    setColorable(true):setMainFont("sansserif", "r"):setFontSize(11):setReadOnly(true)
+    -- use D2Editor now cause it actually makes sense =)
+
+    if white_mode then self.editor:setTextColor(uCol(colors["text"])) else self.editor:setTextColor(uInvertCol(colors["text"])) end
+
+    self.editor:registerFilter {
+        paint = function(gc)
+            if white_mode then gc:setColorRGB(uCol(colors["background"])) else gc:setColorRGB(uInvertCol(colors["background"])) end
+
+            gc:fillRect(self.editor_params.x0, self.editor_params.y0, self.editor_params.x1-self.editor_params.x0, self.editor_params.y1-self.editor_params.y0)
+            return false
+        end
+     }
+
+    self.editor:setText(database[self.keyword].content)
+end
+
+function ReadScreen:paint(gc)
+    if white_mode then gc:setColorRGB(uCol(colors["background"])) else gc:setColorRGB(uInvertCol(colors["background"])) end
+    gc:fillRect(0, 0, pww(), pwh()) -- background
+
+    if white_mode then gc:setColorRGB(uCol({30, 30, 30})) else gc:setColorRGB(uInvertCol({30, 30, 30})) end -- logo
+    gc:setFont("sansserif", "i", 24)
+
+    gc:drawXCenteredString(self.keyword, 0)
+
+    gc:setColorRGB(uCol(colors["bar-universal"]))
+    gc:horizontalBar(self.editor_params.y0-0.02*pwh())
+
+    gc:setColorRGB(uCol(colors["bar-universal"]))
+    gc:horizontalBar(self.editor_params.y1+0.02*pwh())
+
+    gc:setFont("serif", "i", 7)
+    if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
+
+    gc:drawXCenteredString("by Leonard Großmann (2025)", 0.95*pwh())
+end
+
+function ReadScreen:charIn(ch)
+    return nil
+end
+
+function ReadScreen:backspaceKey()
+    return nil
+end
+
+function ReadScreen:clearKey()
+    return nil
+end
+
+function ReadScreen:enterKey()
+    return nil
+end
+
+function ReadScreen:arrowKey(key)
+    return nil
+end
+
+function ReadScreen:escapeKey()
+    self.editor = nil
+    collectgarbage()
+    currentScreen = HomeScreen()
+end
+
 -- global stuff
 
-local current_screen = HomeScreen()
+currentScreen = HomeScreen()
 
 function on.paint(gc)
-    current_screen:paint(gc)
+    currentScreen:paint(gc)
 end
 
 function on.timer()
@@ -1148,23 +1241,27 @@ function on.tabKey()
 end
 
 function on.charIn(ch)
-    current_screen:charIn(ch)
+    currentScreen:charIn(ch)
 end
 
 function on.backspaceKey()
-    current_screen:backspaceKey()
+    currentScreen:backspaceKey()
 end
 
 function on.clearKey()
-    current_screen:clearKey()
+    currentScreen:clearKey()
 end
 
 function on.enterKey()
-    current_screen:enterKey()
+    currentScreen:enterKey()
 end
 
 function on.arrowKey(key)
-    current_screen:arrowKey(key)
+    currentScreen:arrowKey(key)
+end
+
+function on.escapeKey()
+    currentScreen:escapeKey()
 end
 
 timer.start(1/100)

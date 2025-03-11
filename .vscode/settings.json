@@ -4,7 +4,9 @@
         "gc",
         "platform",
         "D2Editor",
-        "database"
+        "database",
+        "screen_manager",
+        "class"
     ],
     "editor.selectionClipboard": false,
     "Lua.diagnostics.disable": [
