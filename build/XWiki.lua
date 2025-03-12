@@ -909,6 +909,8 @@ database['Tyler, the Creator'] = {content='Tyler Gregory Okonma (born March 6, 1
 -- Using BetterLuaAPI for the TI-Nspire
 -- Thanks to adriweb + contributors
 
+platform.apiLevel = "2.0"
+
 function AddToGC(key, func)
     local gcMetatable = platform.withGC(getmetatable)
     gcMetatable[key] = func
@@ -987,6 +989,10 @@ AddToGC("horizontalBar", horizontalBar)
 AddToGC("drawCenteredString", drawCenteredString)
 AddToGC("drawXCenteredString", drawXCenteredString)
 
+local function inRect(px, py, x, y, dx, dy)
+    return (x<=px) and (px<=x+dx) and (y<=py) and (py <= y+dy)
+end
+
 -----------------------------------------
 -------------- main stuff ---------------
 -----------------------------------------
@@ -998,7 +1004,7 @@ colors["background"] = {235, 235, 235}
 colors["bar-universal"] = {48, 213, 200}
 colors["rect"] = {10, 10, 10}
 colors["rect-activated"] = {48, 213, 200}
-local white_mode = true
+local white_mode = false
 
 local currentScreen = nil -- some dummy initialisation
 
@@ -1065,7 +1071,7 @@ function HomeScreen:paint(gc)
             if white_mode then gc:setColorRGB(uCol(colors["text"])) else gc:setColorRGB(uInvertCol(colors["text"])) end
             gc:drawString(keyword, self.search_bar.x0+0.01*pww(), y+self.article_box_height/2, "middle")
 
-            y = y+self.article_box_height+1
+            y = y+self.article_box_height
         end
     end
 
@@ -1093,6 +1099,15 @@ function HomeScreen:updateSearch()
         self.articles = copyTable(new_articles)
     else
         self.articles = {}
+    end
+end
+
+function HomeScreen:mouseDown(x, y)
+    for i=1, #self.articles do
+        if inRect(x, y, self.search_bar.x0, self.search_bar.y1+(i-1)*self.article_box_height, self.search_bar.x1-self.search_bar.x0, self.article_box_height) then
+            self.pointer = i
+            self:enterKey()
+        end
     end
 end
 
@@ -1160,19 +1175,10 @@ function ReadScreen:init(keyword)
     self.editor_params = {x0=0.1*pww(), y0=0.2*pwh(), x1=0.9*pww(), y1=0.9*pwh()}
     self.editor = D2Editor:newRichText():move(self.editor_params.x0, self.editor_params.y0):
     resize(self.editor_params.x1-self.editor_params.x0, self.editor_params.y1-self.editor_params.y0):
-    setColorable(true):setMainFont("sansserif", "r"):setFontSize(11):setReadOnly(true)
+    setColorable(true):setMainFont("sansserif", "r"):setFontSize(9):setReadOnly(true):setBorder(2):setBorderColor(0x30d5c8)
     -- use D2Editor now cause it actually makes sense =)
 
-    if white_mode then self.editor:setTextColor(uCol(colors["text"])) else self.editor:setTextColor(uInvertCol(colors["text"])) end
-
-    self.editor:registerFilter {
-        paint = function(gc)
-            if white_mode then gc:setColorRGB(uCol(colors["background"])) else gc:setColorRGB(uInvertCol(colors["background"])) end
-
-            gc:fillRect(self.editor_params.x0, self.editor_params.y0, self.editor_params.x1-self.editor_params.x0, self.editor_params.y1-self.editor_params.y0)
-            return false
-        end
-     }
+    self.editor:setTextColor(0x0a0a0a) -- no if here because can not change background color of D2Editor -> ~Thanks TI :)
 
     self.editor:setText(database[self.keyword].content)
 end
@@ -1182,9 +1188,9 @@ function ReadScreen:paint(gc)
     gc:fillRect(0, 0, pww(), pwh()) -- background
 
     if white_mode then gc:setColorRGB(uCol({30, 30, 30})) else gc:setColorRGB(uInvertCol({30, 30, 30})) end -- logo
-    gc:setFont("sansserif", "i", 24)
+    gc:setFont("sansserif", "i", 12)
 
-    gc:drawXCenteredString(self.keyword, 0)
+    gc:drawXCenteredString(self.keyword, self.editor_params.y0/2-gc:getStringHeight(self.keyword)/2)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
     gc:horizontalBar(self.editor_params.y0-0.02*pwh())
@@ -1196,6 +1202,10 @@ function ReadScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
     gc:drawXCenteredString("by Leonard Großmann (2025)", 0.95*pwh())
+end
+
+function ReadScreen:mouseDown(x, y)
+    return nil
 end
 
 function ReadScreen:charIn(ch)
@@ -1226,7 +1236,18 @@ end
 
 -- global stuff
 
-currentScreen = HomeScreen()
+function on.construction()
+    timer.start(1/100)
+    currentScreen = HomeScreen()
+end
+
+function on.activate()
+    timer.start(1/100)
+end
+
+function on.deactivate()
+    timer.stop()
+end
 
 function on.paint(gc)
     currentScreen:paint(gc)
@@ -1238,6 +1259,10 @@ end
 
 function on.tabKey()
     white_mode = not white_mode
+end
+
+function on.mouseDown(x, y)
+    currentScreen:mouseDown(x, y)
 end
 
 function on.charIn(ch)
@@ -1263,5 +1288,3 @@ end
 function on.escapeKey()
     currentScreen:escapeKey()
 end
-
-timer.start(1/100)

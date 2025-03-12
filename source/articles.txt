@@ -1,0 +1,445 @@
+Classical mechanics  
+Newton's laws of motion  
+Lagrangian mechanics  
+Hamiltonian mechanics  
+Rigid body dynamics  
+Celestial mechanics  
+Chaos theory  
+Quantum mechanics  
+Schrödinger equation  
+Heisenberg uncertainty principle  
+Quantum field theory  
+Quantum entanglement  
+Wave–particle duality  
+Pauli exclusion principle  
+Bell's theorem  
+Copenhagen interpretation  
+Many-worlds interpretation  
+Relativity  
+Special relativity  
+General relativity  
+Lorentz transformation  
+Minkowski space  
+Time dilation  
+Twin paradox  
+Equivalence principle  
+Black holes  
+Gravitational waves  
+Electromagnetism  
+Maxwell's equations  
+Electromagnetic radiation  
+Lorentz force  
+Faraday's law of induction  
+Gauss's law  
+Coulomb's law  
+Ampère's circuital law  
+Magnetic field  
+Electric field  
+Electrodynamics  
+Thermodynamics  
+Laws of thermodynamics  
+Entropy  
+Heat transfer  
+Carnot cycle  
+Thermodynamic equilibrium  
+Gibbs free energy  
+Boltzmann constant  
+Statistical mechanics  
+Partition function  
+Phase transition  
+Heat engine  
+Periodic table  
+Atomic structure  
+Chemical element  
+Chemical bond  
+Covalent bond  
+Ionic bond  
+Metallic bond  
+Molecule  
+Chemical reaction  
+Reaction kinetics  
+Catalysis  
+Acid–base reaction  
+Redox reaction  
+Chemical equilibrium  
+Stoichiometry  
+Thermodynamics (chemistry)  
+Organic chemistry  
+Hydrocarbons  
+Functional groups  
+Polymers  
+Stereochemistry  
+Biochemistry  
+Amino acids  
+Proteins  
+Enzymes  
+DNA  
+RNA  
+Metabolism  
+Photosynthesis  
+Cellular respiration  
+Genetics  
+DNA  
+RNA  
+Gene  
+Chromosome  
+Genetic code  
+Mutation  
+Mendelian inheritance  
+Genetic engineering  
+Epigenetics  
+Evolution  
+Natural selection  
+Darwinism  
+Speciation  
+Phylogenetics  
+Common descent  
+Extinction  
+Microbiology  
+Bacteria  
+Archaea  
+Virus  
+Fungi  
+Protists  
+Microbiome  
+Antibiotics  
+Pathogen  
+Neuroscience  
+Neuron  
+Synapse  
+Neurotransmitter  
+Brain  
+Central nervous system  
+Peripheral nervous system  
+Cerebral cortex  
+Neuroplasticity  
+Human anatomy  
+Skeletal system  
+Muscular system  
+Circulatory system  
+Respiratory system
+Astronomy  
+Solar System  
+Planet  
+Terrestrial planet  
+Gas giant  
+Exoplanet  
+Earth  
+Moon  
+Black hole  
+Event horizon  
+Singularity  
+Hawking radiation  
+Neutron star  
+Pulsar  
+Supernova  
+Galaxy  
+Milky Way  
+Andromeda Galaxy  
+Dark matter  
+Dark energy  
+Big Bang  
+Cosmic microwave background  
+Cosmic inflation  
+Universe  
+Space exploration  
+NASA  
+International Space Station  
+Hubble Space Telescope  
+James Webb Space Telescope  
+Rocket
+Mathematics  
+Algebra  
+Linear algebra  
+Abstract algebra  
+Group theory  
+Ring theory  
+Field theory  
+Matrix  
+Determinant  
+Eigenvalue  
+Calculus  
+Differential calculus  
+Integral calculus  
+Multivariable calculus  
+Limits  
+Derivative  
+Partial derivative  
+Integral  
+Fundamental theorem of calculus  
+Differential equation  
+Probability  
+Probability theory  
+Random variable  
+Probability distribution  
+Bayes' theorem  
+Law of large numbers  
+Central limit theorem  
+Expected value  
+Variance  
+Statistics  
+Descriptive statistics  
+Inferential statistics  
+Mean  
+Median  
+Mode  
+Standard deviation  
+Correlation  
+Regression analysis  
+Hypothesis testing  
+Number theory  
+Prime number  
+Greatest common divisor  
+Modular arithmetic  
+Diophantine equation  
+Fermat's Last Theorem  
+Set theory  
+Set  
+Subset  
+Union and intersection  
+Cardinality
+Ancient Egypt  
+Pharaoh  
+Pyramids of Egypt  
+Hieroglyphs  
+Nile River  
+Book of the Dead  
+Tutankhamun  
+Cleopatra  
+Ancient Greece  
+Polis  
+Athens  
+Sparta  
+Greek mythology  
+Olympic Games  
+Socrates  
+Plato  
+Aristotle  
+Alexander the Great  
+Ancient Rome  
+Roman Republic  
+Roman Empire  
+Julius Caesar  
+Augustus  
+Pax Romana  
+Roman law  
+Colosseum  
+Mesopotamia  
+Sumerians  
+Babylon  
+Hammurabi  
+Cuneiform  
+Ziggurat  
+Epic of Gilgamesh  
+Ancient China  
+Xia dynasty  
+Shang dynasty  
+Zhou dynasty  
+Confucius  
+Great Wall of China  
+Terracotta Army
+Middle Ages  
+Feudalism  
+Manorialism  
+Chivalry  
+Crusades  
+Knights Templar  
+Hundred Years' War  
+Black Death  
+Magna Carta  
+Byzantine Empire  
+Holy Roman Empire  
+Vikings  
+Reconquista  
+Scholasticism  
+Gothic architecture  
+Renaissance  
+Humanism  
+Leonardo da Vinci  
+Michelangelo  
+Niccolò Machiavelli  
+Printing press  
+Protestant Reformation  
+Martin Luther  
+Catholic Counter-Reformation  
+Erasmus  
+Age of Discovery  
+European exploration  
+Christopher Columbus  
+Ferdinand Magellan  
+Treaty of Tordesillas  
+Industrial Revolution  
+Steam engine  
+Factory system  
+Urbanization  
+French Revolution  
+American Revolution  
+Napoleonic Wars  
+Abolition of slavery  
+World War I  
+Treaty of Versailles  
+Russian Revolution  
+Fascism  
+World War II  
+Adolf Hitler  
+Holocaust  
+Atomic bombings of Hiroshima and Nagasaki  
+United Nations  
+Cold War  
+Iron Curtain  
+NATO  
+Warsaw Pact  
+Korean War  
+Vietnam War  
+Space Race  
+Cuban Missile Crisis  
+Berlin Wall  
+Decolonization  
+Indian independence movement  
+Mahatma Gandhi  
+Apartheid  
+Civil Rights Movement  
+Fall of the Soviet Union  
+European Union  
+Globalization  
+9/11 attacks  
+War on Terror  
+Arab Spring  
+Climate change  
+COVID-19 pandemic  
+Democracy  
+Republic  
+Monarchy  
+Communism  
+Marxism  
+Socialism  
+Capitalism  
+Fascism  
+Totalitarianism  
+Anarchism  
+Political ideologies  
+Liberalism  
+Conservatism  
+Nationalism  
+Imperialism  
+Revolutions  
+American Revolution  
+French Revolution  
+Russian Revolution  
+Civil rights movements  
+Capitalism  
+Mercantilism  
+Socialism  
+Industrial Revolution  
+Great Depression  
+Stock market  
+Gold standard  
+Fiat money  
+Inflation  
+Hyperinflation  
+Economic globalization  
+Bretton Woods system  
+Keynesian economics  
+Neoliberalism  
+Financial crisis of 2008  
+Dot-com bubble  
+Tulip mania  
+Panic of 1873  
+Oil shocks  
+Great Recession  
+Existentialism  
+Rationalism  
+Empiricism  
+Idealism  
+Realism  
+Phenomenology  
+Pragmatism  
+Structuralism  
+Post-structuralism  
+Hermeneutics  
+Marxism  
+Stoicism  
+Nihilism  
+Absurdism  
+Absurdist fiction  
+Deconstruction  
+Utilitarianism  
+Libertarianism  
+Anarchism  
+Feminist philosophy  
+Syntax  
+Semantics  
+Phonetics  
+Phonology  
+Morphology  
+Pragmatics  
+Sociolinguistics  
+Psycholinguistics  
+Language acquisition  
+Language family  
+Diachronic linguistics  
+Synchronic linguistics  
+Language universals  
+Language evolution  
+Language change  
+Code-switching  
+Pidgin and creole languages  
+Bilingualism  
+Linguistic relativity  
+Generative grammar  
+William Shakespeare  
+Hamlet  
+Romeo and Juliet  
+Macbeth  
+Othello  
+King Lear  
+A Midsummer Night's Dream  
+Pride and Prejudice  
+Moby-Dick  
+War and Peace  
+The Great Gatsby  
+Don Quixote  
+The Catcher in the Rye  
+1984  
+To Kill a Mockingbird  
+Crime and Punishment  
+Anna Karenina  
+The Odyssey  
+The Divine Comedy  
+Frankenstein  
+The Iliad  
+The Canterbury Tales  
+The Metamorphosis  
+The Brothers Karamazov  
+Jane Eyre  
+Fahrenheit 451  
+Brave New World  
+Ulysses  
+Wuthering Heights  
+The Scarlet Letter  
+Ludwig van Beethoven  
+Johann Sebastian Bach  
+Wolfgang Amadeus Mozart  
+Frédéric Chopin  
+Pyotr Ilyich Tchaikovsky  
+Johannes Brahms  
+Claude Debussy  
+Antonio Vivaldi  
+Leonardo da Vinci  
+Michelangelo  
+Vincent van Gogh  
+Pablo Picasso  
+Claude Monet  
+Rembrandt  
+The Starry Night  
+The Mona Lisa  
+The Sistine Chapel  
+The Parthenon  
+Baroque architecture  
+Gothic architecture  
+Renaissance art  
+Impressionism  
+Cubism  
+Surrealism  
+Abstract expressionism  
+Art Nouveau
