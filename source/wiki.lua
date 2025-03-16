@@ -8,6 +8,7 @@
 -- Thanks to adriweb + contributors
 
 platform.apiLevel = "2.0"
+local BUILD_NUMBER = "v0.1"
 
 function AddToGC(key, func)
     local gcMetatable = platform.withGC(getmetatable)
@@ -180,11 +181,16 @@ function HomeScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
     gc:drawXCenteredString("by Leonard Großmann (2025)", 0.95*pwh())
+
+    gc:drawString(BUILD_NUMBER, 0.02*pww(), 0.95*pwh(), "top")
 end
 
 function HomeScreen:updateSearch()
     if self.search_bar.text ~= self.placeholder then
         local new_articles={}
+
+        if database[self.search_bar.text] ~= nil then table.insert(new_articles, self.search_bar.text) end
+
         for key,_ in pairs(database) do
             if #new_articles == self.max_entries then
                 break
@@ -201,10 +207,14 @@ function HomeScreen:updateSearch()
 end
 
 function HomeScreen:mouseDown(x, y)
-    for i=1, #self.articles do
-        if inRect(x, y, self.search_bar.x0, self.search_bar.y1+(i-1)*self.article_box_height, self.search_bar.x1-self.search_bar.x0, self.article_box_height) then
-            self.pointer = i
-            self:enterKey()
+    if x==0 and y==0 then -- is cursor not visible?
+        self:enterKey()
+    else
+        for i=1, #self.articles do
+            if inRect(x, y, self.search_bar.x0, self.search_bar.y1+(i-1)*self.article_box_height, self.search_bar.x1-self.search_bar.x0, self.article_box_height) then
+                self.pointer = i
+                self:enterKey()
+            end
         end
     end
 end
@@ -238,12 +248,11 @@ function HomeScreen:enterKey()
         if self.pointer ~= 0 then
             currentScreen = ReadScreen(self.articles[self.pointer])
         else
-            for key, _ in pairs(database) do
-                if key==self.search_bar.text then
-                    currentScreen = ReadScreen(key)
-                end
+            if database[self.search_bar.text] ~= nil then
+                currentScreen = ReadScreen(self.search_bar.text)
+            else
+                currentScreen = ReadScreen(self.articles[1])
             end
-            currentScreen = ReadScreen(self.articles[1])
         end
     end
     self.search_bar.text = self.placeholder -- +redirect
@@ -276,9 +285,9 @@ function ReadScreen:init(keyword)
     setColorable(true):setMainFont("sansserif", "r"):setFontSize(9):setReadOnly(true):setBorder(2):setBorderColor(0x30d5c8)
     -- use D2Editor now cause it actually makes sense =)
 
-    self.editor:setTextColor(0x0a0a0a) -- no if here because can not change background color of D2Editor -> ~Thanks TI :)
+    self.editor:setTextColor(0x0a0a0a) -- no if here, because can not change background color of D2Editor -> ~Thanks TI :)
 
-    self.editor:setText(database[self.keyword].content)
+    self.editor:setText(database[self.keyword], 1)
 end
 
 function ReadScreen:paint(gc)
@@ -300,6 +309,8 @@ function ReadScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
     gc:drawXCenteredString("by Leonard Großmann (2025)", 0.95*pwh())
+
+    gc:drawString(BUILD_NUMBER, 0.02*pww(), 0.95*pwh(), "top")
 end
 
 function ReadScreen:mouseDown(x, y)
@@ -332,6 +343,90 @@ function ReadScreen:escapeKey()
     currentScreen = HomeScreen()
 end
 
+-- Help Screen
+
+HelpScreen = class()
+
+function HelpScreen:init()
+    self.editor_params = {x0=0.1*pww(), y0=0.2*pwh(), x1=0.9*pww(), y1=0.9*pwh()}
+
+    self.editor = D2Editor:newRichText():move(self.editor_params.x0, self.editor_params.y0):
+    resize(self.editor_params.x1-self.editor_params.x0, self.editor_params.y1-self.editor_params.y0):
+    setColorable(true):setMainFont("sansserif", "r"):setFontSize(9):setReadOnly(true):setBorder(2):setBorderColor(0x30d5c8)
+
+    self.editor:setTextColor(0x0a0a0a)
+
+    self.editor:setText(
+    "XWiki is a portable knowledge source for the TI-nspire calculator series created by Leonard Großmann (2025).\n"..
+    "To search something use the keypad for typing in the article name. After that press <enter> or use the handheld's cursor to select an article.\n"..
+    "You will be redirected to the article, if it's available, otherwise the most promissing page will open.\n" ..
+    "Any page consists of a text editor, where you can read the content of the article. The content is a five sentence summary of the Wikipedia article\n"..
+    "Switch back to the homescreen by pressing <esc>.\n"..
+    "You can change the background color (=switch to dark/light mode) using <tab>.\n"..
+    "Characters (in the search bar) can be deleted using <del> (deletes last char) or <clear> (clears the search bar).\n"..
+    "If you have any further questions/suggestions take a look on the Github repository:\n"..
+    "https://github.com/leog314/XWiki\n"..
+    "Note: I am aware that not everything might work as expected, work is still in progress. I hope that the app reacts fine anyway. :)\n"..
+    "The project is open source, you can load your own articles and modify the GUI, if you want to. Please just mention this project, if you do so.\n"..
+    "Anyway, I am not in any means responsible for the contents of this wiki nor of it's modifications. While discusting content should have been filtered out, this isn't guaranteed. You use the app at your own risk!\n"..
+    "This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.", 1
+)
+end
+
+function HelpScreen:paint(gc)
+    if white_mode then gc:setColorRGB(uCol(colors["background"])) else gc:setColorRGB(uInvertCol(colors["background"])) end
+    gc:fillRect(0, 0, pww(), pwh()) -- background
+
+    if white_mode then gc:setColorRGB(uCol({30, 30, 30})) else gc:setColorRGB(uInvertCol({30, 30, 30})) end
+    gc:setFont("sansserif", "b", 12)
+
+    gc:drawXCenteredString("Controls and Help", self.editor_params.y0/2-gc:getStringHeight("Controls and Help")/2)
+
+    gc:setColorRGB(uCol(colors["bar-universal"]))
+    gc:horizontalBar(self.editor_params.y0-0.02*pwh())
+
+    gc:setColorRGB(uCol(colors["bar-universal"]))
+    gc:horizontalBar(self.editor_params.y1+0.02*pwh())
+
+    gc:setFont("serif", "i", 7)
+    if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
+
+    gc:drawXCenteredString("by Leonard Großmann (2025)", 0.95*pwh())
+
+    gc:drawString(BUILD_NUMBER, 0.02*pww(), 0.95*pwh(), "top")
+end
+
+function HelpScreen:mouseDown(x, y)
+    return nil
+end
+
+function HelpScreen:charIn(ch)
+    return nil
+end
+
+function HelpScreen:backspaceKey()
+    return nil
+end
+
+function HelpScreen:clearKey()
+    return nil
+end
+
+function HelpScreen:enterKey()
+    return nil
+end
+
+function HelpScreen:arrowKey(key)
+    return nil
+end
+
+function HelpScreen:escapeKey()
+    self.editor = nil
+    collectgarbage()
+    currentScreen = HomeScreen()
+end
+
+
 -- global stuff
 
 function on.construction()
@@ -341,10 +436,6 @@ end
 
 function on.activate()
     timer.start(1/100)
-end
-
-function on.deactivate()
-    timer.stop()
 end
 
 function on.paint(gc)
@@ -385,4 +476,8 @@ end
 
 function on.escapeKey()
     currentScreen:escapeKey()
+end
+
+function on.help()
+    currentScreen = HelpScreen()
 end
