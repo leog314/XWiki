@@ -1,18 +1,31 @@
 Texas Instruments
 Graphing calculator
 TI-Nspire series
-TI-Nspire CX
-TI-Nspire CAS
-Comparison of Texas Instruments graphing calculators
 TI-84 Plus series
 TI-89 series
-Z80 processor
+Zilog Z80
 Motorola 68000
 Computer Algebra System
 Lua (programming language)
+Python (programming language)
+C++
+C (programming language)
+C Sharp (programming language)
+Rust (programming language)
+JavaScript
+Assembly language
+Linux
+Quantum biology
+SAT
+Arch Linux
+ChatGPT
+DeepSeek
+Google
+Apple Inc.
+Nvidia
+Intel
+AMD
 TI-BASIC
-Ndless
-Texas Instruments software
 Reverse engineering
 Mathematical software
 Anarchism
