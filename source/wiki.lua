@@ -7,8 +7,38 @@
 -- Using BetterLuaAPI for the TI-Nspire
 -- Thanks to adriweb + contributors
 
-platform.apiLevel = "2.0"
-local BUILD_NUMBER = "v0.1"
+-- platform.apiLevel = "2.0"
+
+local BUILD_NUMBER = "v4/25"
+local FPS = 100
+
+-- fix of TI Bug....
+
+local tstart = timer.start
+function timer.start(ms)
+	if not timer.isRunning then
+		tstart(ms)
+	end
+	timer.isRunning = true
+end
+
+local tstop = timer.stop
+function timer.stop()
+	timer.isRunning = false
+	tstop()
+end
+
+function math.round(x)
+    return math.floor(x+0.5)
+end
+
+function table.Length(t)
+    local counter = 0
+    for k, v in pairs(t) do
+        counter = counter + 1
+    end
+    return counter
+end
 
 function AddToGC(key, func)
     local gcMetatable = platform.withGC(getmetatable)
@@ -98,7 +128,7 @@ end
 
 local colors = {} -- dark mode colors are inverted grey scales of light mode
 colors["text"] = {10, 10, 10}
-colors["placeholder"] = {60, 60, 60}
+colors["placeholder"] = {80, 80, 80}
 colors["background"] = {235, 235, 235}
 colors["bar-universal"] = {48, 213, 200}
 colors["rect"] = {10, 10, 10}
@@ -107,13 +137,76 @@ local white_mode = false
 
 local currentScreen = nil -- some dummy initialisation
 
+local images = {}
+images["settings-icon-white_mode"] = "\018\000\000\000\018\000\000\000\000\000\000\000\036\000\000\000\016\000\001\000alalal\1401alalalJ\169J\169J\169J\169al\1401al\1401\255\127alalalal\1401J\169J\169\181VJ\169J\169J\169J\169J\169J\169\1401J\169J\169\1401\255\127alal\1401J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169\1401al\1401J\169J\169J\169J\169J\169J\169J\169\181V\181VJ\169J\169J\169J\169J\169J\169J\169\1401alJ\169J\169J\169J\169J\169\1735alalalal\1735J\169J\169J\169J\169J\169alal\1401J\169J\169J\169alalalJ\169J\169alalalJ\169J\169J\169\1401al\1401J\169J\169J\169\1735alJ\169J\169J\169J\169J\169J\169al\181VJ\169J\169J\169\1401J\169J\169J\169J\169alalJ\169J\169alalJ\169J\169al\181VJ\169J\169J\169J\169J\169J\169J\169\1735alJ\169J\169alalalalJ\169J\169al\1735J\169J\169J\169J\169J\169J\169\1735alJ\169J\169alalalalJ\169J\169al\1735J\169J\169J\169J\169J\169J\169J\169alalJ\169J\169alalJ\169J\169alalJ\169J\169J\169J\169\1401J\169J\169J\169\1735alJ\169J\169J\169J\169J\169J\169al\1735J\169J\169J\169\1401al\1401J\169J\169J\169alalalJ\169J\169alalalJ\169J\169J\169\1401alalJ\169J\169J\169J\169J\169\1735alalalal\1735J\169J\169J\169J\169J\169al\1401J\169J\169J\169J\169J\169J\169J\169\1735\1735J\169J\169J\169J\169J\169J\169J\169\1401\1401\1401J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169\1401\255\127al\255\127\1401J\169J\169\1401J\169J\169J\169J\169J\169J\169\1401J\169J\169\1401\255\127alalalal\1401alalalJ\169J\169J\169J\169\1401alal\1401\255\127alal"
+images["settings-icon-dark_mode"] = "\018\000\000\000\018\000\000\000\000\000\000\000\036\000\000\000\016\000\001\000alalal\1401alalal\181\214\181\214\181\214\181\214al\1401al\1401\255\127alalalal\1401\181\214\181\214\181V\181\214\181\214\181\214\181\214\181\214\181\214\1401\181\214\181\214\1401\255\127alal\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181V\181V\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401al\181\214\181\214\181\214\181\214\181\214\1735alalalal\1735\181\214\181\214\181\214\181\214\181\214alal\1401\181\214\181\214\181\214alalal\181\214\181\214alalal\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214\1735al\181\214\181\214\181\214\181\214\181\214\181\214al\181V\181\214\181\214\181\214\1401\181\214\181\214\181\214\181\214alal\181\214\181\214alal\181\214\181\214al\181V\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1735al\181\214\181\214alalalal\181\214\181\214al\1735\181\214\181\214\181\214\181\214\181\214\181\214\1735al\181\214\181\214alalalal\181\214\181\214al\1735\181\214\181\214\181\214\181\214\181\214\181\214\181\214alal\181\214\181\214alal\181\214\181\214alal\181\214\181\214\181\214\181\214\1401\181\214\181\214\181\214\1735al\181\214\181\214\181\214\181\214\181\214\181\214al\1735\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214alalal\181\214\181\214alalal\181\214\181\214\181\214\1401alal\181\214\181\214\181\214\181\214\181\214\1735alalalal\1735\181\214\181\214\181\214\181\214\181\214al\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1735\1735\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401\1401\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401\255\127al\255\127\1401\181\214\181\214\1401\181\214\181\214\181\214\181\214\181\214\181\214\1401\181\214\181\214\1401\255\127alalalal\1401alalal\181\214\181\214\181\214\181\214\1401alal\1401\255\127alal"
+
+local setting_icon = {x=0.98*pww()-18, y=0.09*pwh()-9, size=18}
+
+-- clipping function
+
+local function ClipString(gc, string, size, clip_start)
+    local clipped = false
+    while gc:getStringWidth(string) > size do
+        clipped = true
+        if clip_start then
+            string = string:sub(2)
+        else
+            string = string:sub(1, -2)
+        end
+    end
+    if clipped and not clip_start then
+        string = string:sub(1, -4) .. "..."
+    end
+    return string
+end
+
+AddToGC("ClipString", ClipString)
+
+-----------------------------------------
+-------------- Animation classes -----------
+-----------------------------------------
+
+Animator = class()
+
+function Animator:init(delta, T, vertical) -- delta is the needed distance mostly pww() or pwh(), T is the total animation duration
+    -- vertical is a bool -> indicating if vertical or horizontal movement
+    self.shift = {x=0, y=0}
+    self.totalTime = T
+
+    local slope = delta / self.totalTime
+    local movementFunction = function (t) return slope*t end
+
+    if vertical then
+        self.func = {fx=(function () return 0 end), fy=movementFunction}
+    else
+        self.func = {fx=movementFunction, fy=(function () return 0 end)}
+    end
+
+    self.time = 0
+end
+
+function Animator:IsOver() return (self.time>self.totalTime) end
+
+function Animator:step()
+    if not self:IsOver() then
+        self.shift.x = self.func.fx(self.time)
+        self.shift.y = self.func.fy(self.time)
+
+        self.time = self.time + 1/FPS
+    else
+        self=nil
+        collectgarbage() -- delete Object
+    end
+end
+
 -----------------------------------------
 -------------- Screen classes -----------
 -----------------------------------------
 
 ------------- HomeScreen class ----------
 
-HomeScreen = class()
+HomeScreen = class(Animator)
 
 function HomeScreen:init()
     self.placeholder = "Search XWiki"
@@ -135,6 +228,11 @@ function HomeScreen:paint(gc)
 
     gc:drawXCenteredString("XWiki", 0)
 
+    local img
+    if white_mode then img = image.new(images["settings-icon-white_mode"]) else img = image.new(images["settings-icon-dark_mode"]) end
+
+    gc:drawImage(img, setting_icon.x, setting_icon.y)
+
     gc:setColorRGB(uCol(colors["bar-universal"]))
     gc:horizontalBar(self.search_bar.y0-0.02*pwh())
 
@@ -151,10 +249,12 @@ function HomeScreen:paint(gc)
     else
         if white_mode then gc:setColorRGB(uCol(colors["text"])) else gc:setColorRGB(uInvertCol(colors["text"])) end
     end
-    gc:setFont("sansserif", "r", 11)
-    gc:drawString(self.search_bar.text, self.search_bar.x0+0.01*pww(), self.search_bar.y0+(self.search_bar.y1-self.search_bar.y0)/2, "middle")
 
-    local y = self.search_bar.y1+1
+    gc:setFont("sansserif", "r", 11)
+    gc:drawString(gc:ClipString(self.search_bar.text, self.search_bar.x1-self.search_bar.x0-0.02*pww(), true),
+    self.search_bar.x0+0.01*pww(), self.search_bar.y0+(self.search_bar.y1-self.search_bar.y0)/2, "middle")
+
+    local y = math.round(self.search_bar.y1)
     for i=1, #self.articles do
         local keyword = self.articles[i]
         if keyword ~= nil then
@@ -164,13 +264,15 @@ function HomeScreen:paint(gc)
                 gc:setColorRGB(uCol(colors["rect-activated"]))
             end
 
-            gc:drawRect(self.search_bar.x0, y, self.search_bar.x1-self.search_bar.x0, self.article_box_height)
+            gc:drawRect(self.search_bar.x0, y, self.search_bar.x1-self.search_bar.x0, math.round(self.article_box_height)-1)
 
             gc:setFont("sansserif", "b", 12)
             if white_mode then gc:setColorRGB(uCol(colors["text"])) else gc:setColorRGB(uInvertCol(colors["text"])) end
-            gc:drawString(keyword, self.search_bar.x0+0.01*pww(), y+self.article_box_height/2, "middle")
 
-            y = y+self.article_box_height
+            gc:drawString(gc:ClipString(keyword, self.search_bar.x1-self.search_bar.x0-0.02*pww(), false),
+            self.search_bar.x0+0.01*pww(), y+self.article_box_height/2, "middle")
+
+            y = y+math.round(self.article_box_height)
         end
     end
 
@@ -189,16 +291,22 @@ function HomeScreen:updateSearch()
     if self.search_bar.text ~= self.placeholder then
         local new_articles={}
 
-        if database[self.search_bar.text] ~= nil then table.insert(new_articles, self.search_bar.text) end
-
         for key,_ in pairs(database) do
-            if #new_articles == self.max_entries then
-                break
-            end
-            if string.find(string.lower(key), string.lower(self.search_bar.text)) then
-                table.insert(new_articles, key) -- :gsub("_", " ")[1])
+            if string.find(string.lower(key), string.lower(self.search_bar.text)) then -- content is substring of key?
+                if #new_articles < self.max_entries then -- table still not full
+                    table.insert(new_articles, key)
+                else
+                    for i=1, self.max_entries do
+                        if #key < #new_articles[i] then -- prefer shorter keywords
+                            new_articles[i] = key
+                            break
+                        end
+                    end
+                end
             end
         end
+
+        if database[self.search_bar.text] ~= nil then table.insert(new_articles, self.search_bar.text) end
 
         self.articles = copyTable(new_articles)
     else
@@ -209,6 +317,8 @@ end
 function HomeScreen:mouseDown(x, y)
     if x==0 and y==0 then -- is cursor not visible?
         self:enterKey()
+    elseif (setting_icon.x<=x and x<=setting_icon.x+setting_icon.size) and (setting_icon.y<=y and y<=setting_icon.y+setting_icon.size) then
+        currentScreen = HelpScreen()
     else
         for i=1, #self.articles do
             if inRect(x, y, self.search_bar.x0, self.search_bar.y1+(i-1)*self.article_box_height, self.search_bar.x1-self.search_bar.x0, self.article_box_height) then
@@ -258,6 +368,19 @@ function HomeScreen:enterKey()
     self.search_bar.text = self.placeholder -- +redirect
 end
 
+function HomeScreen:returnKey()
+    local randIndex = math.round((table.Length(database)-1)*math.random())+1
+    local counter = 0
+  
+    for key, _ in pairs(database) do
+        counter = counter + 1
+        if counter == randIndex then
+            currentScreen = ReadScreen(key)
+            break
+        end
+    end
+end
+
 function HomeScreen:arrowKey(key)
     if key == "up" then
         self.pointer = (self.pointer-1) % (#self.articles+1)
@@ -282,12 +405,20 @@ function ReadScreen:init(keyword)
     self.editor_params = {x0=0.1*pww(), y0=0.2*pwh(), x1=0.9*pww(), y1=0.9*pwh()}
     self.editor = D2Editor:newRichText():move(self.editor_params.x0, self.editor_params.y0):
     resize(self.editor_params.x1-self.editor_params.x0, self.editor_params.y1-self.editor_params.y0):
-    setColorable(true):setMainFont("sansserif", "r"):setFontSize(9):setReadOnly(true):setBorder(2):setBorderColor(0x30d5c8)
+    setColorable(true):setMainFont("sansserif", "r"):setFontSize(9):setReadOnly(true):setBorder(2):
+    setBorderColor(0x30d5c8):setFocus(true)
     -- use D2Editor now cause it actually makes sense =)
 
     self.editor:setTextColor(0x0a0a0a) -- no if here, because can not change background color of D2Editor -> ~Thanks TI :)
 
     self.editor:setText(database[self.keyword], 1)
+
+    self.editor:registerFilter {
+        enterKey = function()
+            self.editor:setFocus(not self.editor:hasFocus())
+            return true
+        end,
+     }
 end
 
 function ReadScreen:paint(gc)
@@ -297,7 +428,12 @@ function ReadScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol({30, 30, 30})) else gc:setColorRGB(uInvertCol({30, 30, 30})) end -- logo
     gc:setFont("sansserif", "i", 12)
 
-    gc:drawXCenteredString(self.keyword, self.editor_params.y0/2-gc:getStringHeight(self.keyword)/2)
+    gc:drawXCenteredString(gc:ClipString(self.keyword, 0.7*pww(), false), self.editor_params.y0/2-gc:getStringHeight(self.keyword)/2)
+
+    local img
+    if white_mode then img = image.new(images["settings-icon-white_mode"]) else img = image.new(images["settings-icon-dark_mode"]) end
+
+    gc:drawImage(img, setting_icon.x, setting_icon.y)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
     gc:horizontalBar(self.editor_params.y0-0.02*pwh())
@@ -314,7 +450,11 @@ function ReadScreen:paint(gc)
 end
 
 function ReadScreen:mouseDown(x, y)
-    return nil
+    if (setting_icon.x<=x and x<=setting_icon.x+setting_icon.size) and (setting_icon.y<=y and y<=setting_icon.y+setting_icon.size) then
+        self.editor = nil
+        collectgarbage()
+        currentScreen = HelpScreen()
+    end
 end
 
 function ReadScreen:charIn(ch)
@@ -330,6 +470,10 @@ function ReadScreen:clearKey()
 end
 
 function ReadScreen:enterKey()
+    return nil
+end
+
+function ReadScreen:returnKey()
     return nil
 end
 
@@ -352,7 +496,8 @@ function HelpScreen:init()
 
     self.editor = D2Editor:newRichText():move(self.editor_params.x0, self.editor_params.y0):
     resize(self.editor_params.x1-self.editor_params.x0, self.editor_params.y1-self.editor_params.y0):
-    setColorable(true):setMainFont("sansserif", "r"):setFontSize(9):setReadOnly(true):setBorder(2):setBorderColor(0x30d5c8)
+    setColorable(true):setMainFont("sansserif", "r"):setFontSize(9):setReadOnly(true):setBorder(2):
+    setBorderColor(0x30d5c8):setFocus(true)
 
     self.editor:setTextColor(0x0a0a0a)
 
@@ -360,17 +505,23 @@ function HelpScreen:init()
     "XWiki is a portable knowledge source for the TI-nspire calculator series created by Leonard Großmann (2025).\n"..
     "To search something use the keypad for typing in the article name. After that press <enter> or use the handheld's cursor to select an article.\n"..
     "You will be redirected to the article, if it's available, otherwise the most promissing page will open.\n" ..
-    "Any page consists of a text editor, where you can read the content of the article. The content is a five sentence summary of the Wikipedia article\n"..
+    "Any page consists of a text editor, where you can read the content of the article. The content mostly is a five sentence summary of the Wikipedia article.\n"..
     "Switch back to the homescreen by pressing <esc>.\n"..
     "You can change the background color (=switch to dark/light mode) using <tab>.\n"..
     "Characters (in the search bar) can be deleted using <del> (deletes last char) or <clear> (clears the search bar).\n"..
     "If you have any further questions/suggestions take a look on the Github repository:\n"..
-    "https://github.com/leog314/XWiki\n"..
+    "\thttps://github.com/leog314/XWiki\n"..
     "Note: I am aware that not everything might work as expected, work is still in progress. I hope that the app reacts fine anyway. :)\n"..
     "The project is open source, you can load your own articles and modify the GUI, if you want to. Please just mention this project, if you do so.\n"..
-    "Anyway, I am not in any means responsible for the contents of this wiki nor of it's modifications. While discusting content should have been filtered out, this isn't guaranteed. You use the app at your own risk!\n"..
+    "Anyway, I am not in any means responsible for the contents of this wiki nor of it's modifications. While discusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!\n"..
     "This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.", 1
 )
+    self.editor:registerFilter {
+        enterKey = function()
+            self.editor:setFocus(not self.editor:hasFocus())
+            return true
+        end,
+    }
 end
 
 function HelpScreen:paint(gc)
@@ -381,6 +532,11 @@ function HelpScreen:paint(gc)
     gc:setFont("sansserif", "b", 12)
 
     gc:drawXCenteredString("Controls and Help", self.editor_params.y0/2-gc:getStringHeight("Controls and Help")/2)
+
+    local img
+    if white_mode then img = image.new(images["settings-icon-white_mode"]) else img = image.new(images["settings-icon-dark_mode"]) end
+
+    gc:drawImage(img, setting_icon.x, setting_icon.y)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
     gc:horizontalBar(self.editor_params.y0-0.02*pwh())
@@ -416,6 +572,10 @@ function HelpScreen:enterKey()
     return nil
 end
 
+function HelpScreen:returnKey()
+    return nil
+end
+
 function HelpScreen:arrowKey(key)
     return nil
 end
@@ -426,16 +586,15 @@ function HelpScreen:escapeKey()
     currentScreen = HomeScreen()
 end
 
-
 -- global stuff
 
 function on.construction()
-    timer.start(1/100)
+    timer.start(1/FPS)
     currentScreen = HomeScreen()
 end
 
-function on.activate()
-    timer.start(1/100)
+function on.resize(w, h)
+    timer.start(1/FPS)
 end
 
 function on.paint(gc)
@@ -470,6 +629,10 @@ function on.enterKey()
     currentScreen:enterKey()
 end
 
+function on.returnKey()
+    currentScreen:returnKey()
+end
+
 function on.arrowKey(key)
     currentScreen:arrowKey(key)
 end
@@ -479,5 +642,10 @@ function on.escapeKey()
 end
 
 function on.help()
+    if currentScreen.editor ~= nil then currentScreen.editor=nil end
+    collectgarbage()
+
     currentScreen = HelpScreen()
 end
+
+timer.start(1/FPS)
