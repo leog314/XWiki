@@ -9,8 +9,10 @@
 
 -- platform.apiLevel = "2.0"
 
-local BUILD_NUMBER = "v4/25"
+local BUILD_NUMBER = "v5/25"
 local FPS = 100
+
+local VERTICAL_ANIMATION_TIME = 0.1
 
 -- fix of TI Bug....
 
@@ -69,8 +71,8 @@ local function drawCenteredString(gc, str)
     gc:drawString(str, (platform.window:width() - gc:getStringWidth(str)) / 2, platform.window:height() / 2, "middle")
 end
 
-local function drawXCenteredString(gc, str, y)
-    gc:drawString(str, (platform.window:width() - gc:getStringWidth(str)) / 2, y, "top")
+local function drawXCenteredString(gc, str, shiftx, y) -- include shiftx
+    gc:drawString(str, shiftx + (platform.window:width() - gc:getStringWidth(str)) / 2, y, "top")
 end
 
 local function verticalBar(gc, x)
@@ -135,8 +137,6 @@ colors["rect"] = {10, 10, 10}
 colors["rect-activated"] = {48, 213, 200}
 local white_mode = false
 
-local currentScreen = nil -- some dummy initialisation
-
 local images = {}
 images["settings-icon-white_mode"] = "\018\000\000\000\018\000\000\000\000\000\000\000\036\000\000\000\016\000\001\000alalal\1401alalalJ\169J\169J\169J\169al\1401al\1401\255\127alalalal\1401J\169J\169\181VJ\169J\169J\169J\169J\169J\169\1401J\169J\169\1401\255\127alal\1401J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169\1401al\1401J\169J\169J\169J\169J\169J\169J\169\181V\181VJ\169J\169J\169J\169J\169J\169J\169\1401alJ\169J\169J\169J\169J\169\1735alalalal\1735J\169J\169J\169J\169J\169alal\1401J\169J\169J\169alalalJ\169J\169alalalJ\169J\169J\169\1401al\1401J\169J\169J\169\1735alJ\169J\169J\169J\169J\169J\169al\181VJ\169J\169J\169\1401J\169J\169J\169J\169alalJ\169J\169alalJ\169J\169al\181VJ\169J\169J\169J\169J\169J\169J\169\1735alJ\169J\169alalalalJ\169J\169al\1735J\169J\169J\169J\169J\169J\169\1735alJ\169J\169alalalalJ\169J\169al\1735J\169J\169J\169J\169J\169J\169J\169alalJ\169J\169alalJ\169J\169alalJ\169J\169J\169J\169\1401J\169J\169J\169\1735alJ\169J\169J\169J\169J\169J\169al\1735J\169J\169J\169\1401al\1401J\169J\169J\169alalalJ\169J\169alalalJ\169J\169J\169\1401alalJ\169J\169J\169J\169J\169\1735alalalal\1735J\169J\169J\169J\169J\169al\1401J\169J\169J\169J\169J\169J\169J\169\1735\1735J\169J\169J\169J\169J\169J\169J\169\1401\1401\1401J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169\1401\255\127al\255\127\1401J\169J\169\1401J\169J\169J\169J\169J\169J\169\1401J\169J\169\1401\255\127alalalal\1401alalalJ\169J\169J\169J\169\1401alal\1401\255\127alal"
 images["settings-icon-dark_mode"] = "\018\000\000\000\018\000\000\000\000\000\000\000\036\000\000\000\016\000\001\000alalal\1401alalal\181\214\181\214\181\214\181\214al\1401al\1401\255\127alalalal\1401\181\214\181\214\181V\181\214\181\214\181\214\181\214\181\214\181\214\1401\181\214\181\214\1401\255\127alal\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181V\181V\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401al\181\214\181\214\181\214\181\214\181\214\1735alalalal\1735\181\214\181\214\181\214\181\214\181\214alal\1401\181\214\181\214\181\214alalal\181\214\181\214alalal\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214\1735al\181\214\181\214\181\214\181\214\181\214\181\214al\181V\181\214\181\214\181\214\1401\181\214\181\214\181\214\181\214alal\181\214\181\214alal\181\214\181\214al\181V\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1735al\181\214\181\214alalalal\181\214\181\214al\1735\181\214\181\214\181\214\181\214\181\214\181\214\1735al\181\214\181\214alalalal\181\214\181\214al\1735\181\214\181\214\181\214\181\214\181\214\181\214\181\214alal\181\214\181\214alal\181\214\181\214alal\181\214\181\214\181\214\181\214\1401\181\214\181\214\181\214\1735al\181\214\181\214\181\214\181\214\181\214\181\214al\1735\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214alalal\181\214\181\214alalal\181\214\181\214\181\214\1401alal\181\214\181\214\181\214\181\214\181\214\1735alalalal\1735\181\214\181\214\181\214\181\214\181\214al\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1735\1735\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401\1401\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401\255\127al\255\127\1401\181\214\181\214\1401\181\214\181\214\181\214\181\214\181\214\181\214\1401\181\214\181\214\1401\255\127alalalal\1401alalal\181\214\181\214\181\214\181\214\1401alal\1401\255\127alal"
@@ -164,40 +164,127 @@ end
 AddToGC("ClipString", ClipString)
 
 -----------------------------------------
--------------- Animation classes -----------
+-------------- Screen handler -----------
 -----------------------------------------
 
-Animator = class()
+ScreenHandler = class()
 
-function Animator:init(delta, T, vertical) -- delta is the needed distance mostly pww() or pwh(), T is the total animation duration
-    -- vertical is a bool -> indicating if vertical or horizontal movement
-    self.shift = {x=0, y=0}
-    self.totalTime = T
-
-    local slope = delta / self.totalTime
-    local movementFunction = function (t) return slope*t end
-
-    if vertical then
-        self.func = {fx=(function () return 0 end), fy=movementFunction}
-    else
-        self.func = {fx=movementFunction, fy=(function () return 0 end)}
-    end
-
-    self.time = 0
+function ScreenHandler:init(initialScreen)
+    self.currentScreen = {screen=initialScreen, fx=function (t) return 0 end, fy=function (t) return 0 end}
+    self.newScreen = nil -- max two screens at a time
 end
 
-function Animator:IsOver() return (self.time>self.totalTime) end
+function ScreenHandler:IsAnimationOver() return (self.animation.time>self.animation.totalTime) end -- nil = forever
 
-function Animator:step()
-    if not self:IsOver() then
-        self.shift.x = self.func.fx(self.time)
-        self.shift.y = self.func.fy(self.time)
-
-        self.time = self.time + 1/FPS
-    else
-        self=nil
-        collectgarbage() -- delete Object
+function ScreenHandler:step()
+    if self.newScreen == nil then
+        return
     end
+
+    self.animation.time = self.animation.time + 1/FPS
+    if not self:IsAnimationOver() then
+        self.currentScreen.screen.shiftx = self.currentScreen.fx(self.animation.time)
+        self.currentScreen.screen.shifty = self.currentScreen.fy(self.animation.time)
+
+        self.newScreen.screen.shiftx = self.newScreen.fx(self.animation.time)
+        self.newScreen.screen.shifty = self.newScreen.fy(self.animation.time)
+    else
+        -- destroy
+        self.currentScreen.screen.editor = nil -- TI bug?
+        self.currentScreen = nil
+        collectgarbage()
+
+        self.currentScreen = {screen=self.newScreen.screen, fx=function (t) return 0 end, fy=function (t) return 0 end}
+        self.currentScreen.screen.shiftx = 0
+        self.currentScreen.screen.shifty = 0 -- correcting for floating point errors
+
+        self.newScreen = nil
+        self.animation = nil
+        collectgarbage()
+    end
+end
+
+function ScreenHandler:paint(gc)
+    self.currentScreen.screen:paint(gc)
+    if self.newScreen~=nil then self.newScreen.screen:paint(gc) end
+end
+
+function ScreenHandler:push(screen, direction)
+    self.newScreen = {screen=screen, fx=function (t) return 0 end, fy=function (t) return 0 end}
+    self.animation = {time=0, totalTime=0}
+
+    if direction=="up" then -- -> push screens up
+        self.animation.totalTime = VERTICAL_ANIMATION_TIME
+        local delta = pwh()
+    
+        self.currentScreen.fy = function (t) return -(delta/self.animation.totalTime)*t end
+        self.newScreen.fy = function (t) return delta-(delta/self.animation.totalTime)*t end
+
+        self.newScreen.screen.shifty = delta
+
+    elseif direction == "down" then
+        self.animation.totalTime = VERTICAL_ANIMATION_TIME
+        local delta = pwh()
+
+        self.currentScreen.fy = function (t) return (delta/self.animation.totalTime)*t end
+        self.newScreen.fy = function (t) return (delta/self.animation.totalTime)*t-delta end
+
+        self.newScreen.screen.shifty = -delta
+
+    elseif direction == "left" then
+        self.animation.totalTime = 4/3 * VERTICAL_ANIMATION_TIME
+        local delta = pww()
+
+        self.currentScreen.fx = function (t) return -(delta/self.animation.totalTime)*t end
+        self.newScreen.fx = function (t) return delta-(delta/self.animation.totalTime)*t end
+
+        self.newScreen.screen.shiftx = delta
+
+    elseif direction == "right" then
+        self.animation.totalTime = 4/3 * VERTICAL_ANIMATION_TIME
+        local delta = pww()
+
+        self.currentScreen.fx = function (t) return (delta/self.animation.totalTime) *t end
+        self.newScreen.fx = function (t) return (delta/self.animation.totalTime)*t-delta end
+    
+        self.newScreen.screen.shiftx = -delta
+    end
+end
+
+function ScreenHandler:mouseDown(x, y)
+    if self.newScreen==nil then self.currentScreen.screen:mouseDown(x, y) end
+end
+
+function ScreenHandler:charIn(ch)
+    if self.newScreen==nil then self.currentScreen.screen:charIn(ch) end
+end
+
+function ScreenHandler:backspaceKey()
+    if self.newScreen==nil then self.currentScreen.screen:backspaceKey() end
+end
+
+function ScreenHandler:clearKey()
+    if self.newScreen==nil then self.currentScreen.screen:clearKey() end
+end
+
+function ScreenHandler:enterKey()
+    if self.newScreen==nil then self.currentScreen.screen:enterKey() end
+end
+
+function ScreenHandler:returnKey()
+    if self.newScreen==nil then self.currentScreen.screen:returnKey() end
+end
+
+function ScreenHandler:arrowKey(key)
+    if self.newScreen==nil then self.currentScreen.screen:arrowKey(key) end
+end
+
+function ScreenHandler:escapeKey()
+    if self.newScreen==nil then self.currentScreen.screen:escapeKey() end
+end
+
+function ScreenHandler:help()
+    if self.newScreen==nil then self.currentScreen.screen:help() end
 end
 
 -----------------------------------------
@@ -206,7 +293,7 @@ end
 
 ------------- HomeScreen class ----------
 
-HomeScreen = class(Animator)
+HomeScreen = class()
 
 function HomeScreen:init()
     self.placeholder = "Search XWiki"
@@ -217,24 +304,26 @@ function HomeScreen:init()
     self.article_box_height = 0.1*pwh()
 
     self.max_entries = 5
+
+    self.shiftx, self.shifty = 0, 0
 end
 
 function HomeScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol(colors["background"])) else gc:setColorRGB(uInvertCol(colors["background"])) end
-    gc:fillRect(0, 0, pww(), pwh()) -- background
+    gc:fillRect(self.shiftx, self.shifty, pww(), pwh()) -- background
 
     if white_mode then gc:setColorRGB(uCol({30, 30, 30})) else gc:setColorRGB(uInvertCol({30, 30, 30})) end -- logo
     gc:setFont("sansserif", "b", 24)
 
-    gc:drawXCenteredString("XWiki", 0)
+    gc:drawXCenteredString("XWiki", self.shiftx, self.shifty)
 
     local img
     if white_mode then img = image.new(images["settings-icon-white_mode"]) else img = image.new(images["settings-icon-dark_mode"]) end
 
-    gc:drawImage(img, setting_icon.x, setting_icon.y)
+    gc:drawImage(img, self.shiftx + setting_icon.x, self.shifty + setting_icon.y)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.search_bar.y0-0.02*pwh())
+    gc:horizontalBar(self.shifty + self.search_bar.y0-0.02*pwh())
 
     if self.pointer ~= 0 then
         if white_mode then gc:setColorRGB(uCol(colors["rect"])) else gc:setColorRGB(uInvertCol(colors["rect"])) end -- search_bar
@@ -242,7 +331,7 @@ function HomeScreen:paint(gc)
         gc:setColorRGB(uCol(colors["rect-activated"]))
     end
 
-    gc:drawRect(self.search_bar.x0, self.search_bar.y0, self.search_bar.x1-self.search_bar.x0, self.search_bar.y1-self.search_bar.y0)
+    gc:drawRect(self.shiftx + self.search_bar.x0, self.shifty + self.search_bar.y0, self.search_bar.x1-self.search_bar.x0, self.search_bar.y1-self.search_bar.y0)
 
     if self.search_bar.text == self.placeholder then -- editor content
         if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
@@ -252,7 +341,7 @@ function HomeScreen:paint(gc)
 
     gc:setFont("sansserif", "r", 11)
     gc:drawString(gc:ClipString(self.search_bar.text, self.search_bar.x1-self.search_bar.x0-0.02*pww(), true),
-    self.search_bar.x0+0.01*pww(), self.search_bar.y0+(self.search_bar.y1-self.search_bar.y0)/2, "middle")
+    self.shiftx + self.search_bar.x0+0.01*pww(), self.shifty + self.search_bar.y0+(self.search_bar.y1-self.search_bar.y0)/2, "middle")
 
     local y = math.round(self.search_bar.y1)
     for i=1, #self.articles do
@@ -264,27 +353,27 @@ function HomeScreen:paint(gc)
                 gc:setColorRGB(uCol(colors["rect-activated"]))
             end
 
-            gc:drawRect(self.search_bar.x0, y, self.search_bar.x1-self.search_bar.x0, math.round(self.article_box_height)-1)
+            gc:drawRect(self.shiftx + self.search_bar.x0, self.shifty + y, self.search_bar.x1-self.search_bar.x0, math.round(self.article_box_height)-1)
 
             gc:setFont("sansserif", "b", 12)
             if white_mode then gc:setColorRGB(uCol(colors["text"])) else gc:setColorRGB(uInvertCol(colors["text"])) end
 
             gc:drawString(gc:ClipString(keyword, self.search_bar.x1-self.search_bar.x0-0.02*pww(), false),
-            self.search_bar.x0+0.01*pww(), y+self.article_box_height/2, "middle")
+            self.shiftx + self.search_bar.x0+0.01*pww(), self.shifty + y + self.article_box_height/2, "middle")
 
             y = y+math.round(self.article_box_height)
         end
     end
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(0.92*pwh())
+    gc:horizontalBar(self.shifty + 0.92*pwh())
 
     gc:setFont("serif", "i", 7)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
-    gc:drawXCenteredString("by Leonard Großmann (2025)", 0.95*pwh())
+    gc:drawXCenteredString("by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95*pwh())
 
-    gc:drawString(BUILD_NUMBER, 0.02*pww(), 0.95*pwh(), "top")
+    gc:drawString(BUILD_NUMBER, self.shiftx + 0.02*pww(), self.shifty + 0.95*pwh(), "top")
 end
 
 function HomeScreen:updateSearch()
@@ -306,7 +395,7 @@ function HomeScreen:updateSearch()
             end
         end
 
-        if database[self.search_bar.text] ~= nil then table.insert(new_articles, self.search_bar.text) end
+        -- if database[self.search_bar.text] ~= nil then table.insert(new_articles, self.search_bar.text) end
 
         self.articles = copyTable(new_articles)
     else
@@ -318,7 +407,7 @@ function HomeScreen:mouseDown(x, y)
     if x==0 and y==0 then -- is cursor not visible?
         self:enterKey()
     elseif (setting_icon.x<=x and x<=setting_icon.x+setting_icon.size) and (setting_icon.y<=y and y<=setting_icon.y+setting_icon.size) then
-        currentScreen = HelpScreen()
+        Handler:push(HelpScreen(), "down")
     else
         for i=1, #self.articles do
             if inRect(x, y, self.search_bar.x0, self.search_bar.y1+(i-1)*self.article_box_height, self.search_bar.x1-self.search_bar.x0, self.article_box_height) then
@@ -356,12 +445,12 @@ end
 function HomeScreen:enterKey()
     if #self.articles ~= 0 then
         if self.pointer ~= 0 then
-            currentScreen = ReadScreen(self.articles[self.pointer])
+            Handler:push(ReadScreen(self.articles[self.pointer]), "left")
         else
             if database[self.search_bar.text] ~= nil then
-                currentScreen = ReadScreen(self.search_bar.text)
+                Handler:push(ReadScreen(self.search_bar.text), "left")
             else
-                currentScreen = ReadScreen(self.articles[1])
+                Handler:push(ReadScreen(self.articles[1]), "left")
             end
         end
     end
@@ -375,7 +464,7 @@ function HomeScreen:returnKey()
     for key, _ in pairs(database) do
         counter = counter + 1
         if counter == randIndex then
-            currentScreen = ReadScreen(key)
+            Handler:push(ReadScreen(key), "left")
             break
         end
     end
@@ -393,6 +482,10 @@ end
 
 function HomeScreen:escapeKey()
     self.pointer = 0
+end
+
+function HomeScreen:help()
+    Handler:push(HelpScreen(), "down")
 end
 
 ----------- "TextScreen" class ----------
@@ -419,72 +512,80 @@ function ReadScreen:init(keyword)
             return true
         end,
      }
+
+    self.shiftx, self.shifty = 0, 0
 end
 
 function ReadScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol(colors["background"])) else gc:setColorRGB(uInvertCol(colors["background"])) end
-    gc:fillRect(0, 0, pww(), pwh()) -- background
+    gc:fillRect(self.shiftx, self.shifty, pww(), pwh()) -- background
 
     if white_mode then gc:setColorRGB(uCol({30, 30, 30})) else gc:setColorRGB(uInvertCol({30, 30, 30})) end -- logo
     gc:setFont("sansserif", "i", 12)
 
-    gc:drawXCenteredString(gc:ClipString(self.keyword, 0.7*pww(), false), self.editor_params.y0/2-gc:getStringHeight(self.keyword)/2)
+    gc:drawXCenteredString(gc:ClipString(self.keyword, 0.7*pww(), false), self.shiftx, self.shifty + self.editor_params.y0/2-gc:getStringHeight(self.keyword)/2)
 
     local img
     if white_mode then img = image.new(images["settings-icon-white_mode"]) else img = image.new(images["settings-icon-dark_mode"]) end
 
-    gc:drawImage(img, setting_icon.x, setting_icon.y)
+    gc:drawImage(img, self.shiftx + setting_icon.x, self.shifty + setting_icon.y)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.editor_params.y0-0.02*pwh())
+    gc:horizontalBar(self.shifty + self.editor_params.y0-0.02*pwh())
+
+    self.editor:move(self.editor_params.x0 + self.shiftx, self.editor_params.y0 + self.shifty)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.editor_params.y1+0.02*pwh())
+    gc:horizontalBar(self.shifty + self.editor_params.y1+0.02*pwh())
 
     gc:setFont("serif", "i", 7)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
-    gc:drawXCenteredString("by Leonard Großmann (2025)", 0.95*pwh())
+    gc:drawXCenteredString("by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95*pwh())
 
-    gc:drawString(BUILD_NUMBER, 0.02*pww(), 0.95*pwh(), "top")
+    gc:drawString(BUILD_NUMBER, self.shiftx + 0.02*pww(), self.shifty + 0.95*pwh(), "top")
 end
 
 function ReadScreen:mouseDown(x, y)
     if (setting_icon.x<=x and x<=setting_icon.x+setting_icon.size) and (setting_icon.y<=y and y<=setting_icon.y+setting_icon.size) then
-        self.editor = nil
-        collectgarbage()
-        currentScreen = HelpScreen()
+        -- self.editor = nil
+        -- collectgarbage()
+        Handler:push(HelpScreen(), "down")
     end
 end
 
 function ReadScreen:charIn(ch)
-    return nil
+    return
 end
 
 function ReadScreen:backspaceKey()
-    return nil
+    return
 end
 
 function ReadScreen:clearKey()
-    return nil
+    return
 end
 
 function ReadScreen:enterKey()
-    return nil
+    return
 end
 
 function ReadScreen:returnKey()
-    return nil
+    return
 end
 
 function ReadScreen:arrowKey(key)
-    return nil
+    return
 end
 
 function ReadScreen:escapeKey()
-    self.editor = nil
-    collectgarbage()
-    currentScreen = HomeScreen()
+    -- self.editor = nil
+    -- collectgarbage()
+    Handler:push(HomeScreen(), "right")
+end
+
+function ReadScreen:help()
+    Handler:push(HelpScreen(), "down")
 end
 
 -- Help Screen
@@ -505,7 +606,8 @@ function HelpScreen:init()
     "XWiki is a portable knowledge source for the TI-nspire calculator series created by Leonard Großmann (2025).\n"..
     "To search something use the keypad for typing in the article name. After that press <enter> or use the handheld's cursor to select an article.\n"..
     "You will be redirected to the article, if it's available, otherwise the most promissing page will open.\n" ..
-    "Any page consists of a text editor, where you can read the content of the article. The content mostly is a five sentence summary of the Wikipedia article.\n"..
+    "By pressing the <return> key you get redirected to a randomly chosen article.\n"..
+    "Any page consists of a text editor, where you can read the content of the article. Usually the content is a five sentence summary of the Wikipedia article.\n"..
     "Switch back to the homescreen by pressing <esc>.\n"..
     "You can change the background color (=switch to dark/light mode) using <tab>.\n"..
     "Characters (in the search bar) can be deleted using <del> (deletes last char) or <clear> (clears the search bar).\n"..
@@ -522,75 +624,81 @@ function HelpScreen:init()
             return true
         end,
     }
+
+    self.shiftx, self.shifty = 0, 0
 end
 
 function HelpScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol(colors["background"])) else gc:setColorRGB(uInvertCol(colors["background"])) end
-    gc:fillRect(0, 0, pww(), pwh()) -- background
+    gc:fillRect(0, 0, self.shiftx + pww(), self.shifty + pwh()) -- background
 
     if white_mode then gc:setColorRGB(uCol({30, 30, 30})) else gc:setColorRGB(uInvertCol({30, 30, 30})) end
     gc:setFont("sansserif", "b", 12)
 
-    gc:drawXCenteredString("Controls and Help", self.editor_params.y0/2-gc:getStringHeight("Controls and Help")/2)
+    gc:drawXCenteredString("Controls and Help", self.shiftx, self.shifty + self.editor_params.y0/2-gc:getStringHeight("Controls and Help")/2)
 
     local img
     if white_mode then img = image.new(images["settings-icon-white_mode"]) else img = image.new(images["settings-icon-dark_mode"]) end
 
-    gc:drawImage(img, setting_icon.x, setting_icon.y)
+    gc:drawImage(img, self.shiftx + setting_icon.x, self.shifty + setting_icon.y)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.editor_params.y0-0.02*pwh())
+    gc:horizontalBar(self.shifty + self.editor_params.y0-0.02*pwh())
+
+    self.editor:move(self.editor_params.x0 + self.shiftx, self.editor_params.y0 + self.shifty)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.editor_params.y1+0.02*pwh())
+    gc:horizontalBar(self.shifty + self.editor_params.y1+0.02*pwh())
 
     gc:setFont("serif", "i", 7)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
-    gc:drawXCenteredString("by Leonard Großmann (2025)", 0.95*pwh())
+    gc:drawXCenteredString("by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95*pwh())
 
-    gc:drawString(BUILD_NUMBER, 0.02*pww(), 0.95*pwh(), "top")
+    gc:drawString(BUILD_NUMBER, self.shiftx + 0.02*pww(), self.shifty + 0.95*pwh(), "top")
 end
 
 function HelpScreen:mouseDown(x, y)
-    return nil
+    return
 end
 
 function HelpScreen:charIn(ch)
-    return nil
+    return
 end
 
 function HelpScreen:backspaceKey()
-    return nil
+    return
 end
 
 function HelpScreen:clearKey()
-    return nil
+    return
 end
 
 function HelpScreen:enterKey()
-    return nil
+    return
 end
 
 function HelpScreen:returnKey()
-    return nil
+    return
 end
 
 function HelpScreen:arrowKey(key)
-    return nil
+    return
 end
 
 function HelpScreen:escapeKey()
-    self.editor = nil
-    collectgarbage()
-    currentScreen = HomeScreen()
+    Handler:push(HomeScreen(), "up")
+end
+
+function HelpScreen:help()
+    return
 end
 
 -- global stuff
 
 function on.construction()
     timer.start(1/FPS)
-    currentScreen = HomeScreen()
+    Handler = ScreenHandler(HomeScreen())
 end
 
 function on.resize(w, h)
@@ -598,10 +706,11 @@ function on.resize(w, h)
 end
 
 function on.paint(gc)
-    currentScreen:paint(gc)
+    Handler:paint(gc)
 end
 
 function on.timer()
+    Handler:step()
     screenRefresh()
 end
 
@@ -610,42 +719,39 @@ function on.tabKey()
 end
 
 function on.mouseDown(x, y)
-    currentScreen:mouseDown(x, y)
+    Handler:mouseDown(x, y)
 end
 
 function on.charIn(ch)
-    currentScreen:charIn(ch)
+    Handler:charIn(ch)
 end
 
 function on.backspaceKey()
-    currentScreen:backspaceKey()
+    Handler:backspaceKey()
 end
 
 function on.clearKey()
-    currentScreen:clearKey()
+    Handler:clearKey()
 end
 
 function on.enterKey()
-    currentScreen:enterKey()
+    Handler:enterKey()
 end
 
 function on.returnKey()
-    currentScreen:returnKey()
+    Handler:returnKey()
 end
 
 function on.arrowKey(key)
-    currentScreen:arrowKey(key)
+    Handler:arrowKey(key)
 end
 
 function on.escapeKey()
-    currentScreen:escapeKey()
+    Handler:escapeKey()
 end
 
 function on.help()
-    if currentScreen.editor ~= nil then currentScreen.editor=nil end
-    collectgarbage()
-
-    currentScreen = HelpScreen()
+    Handler:help()
 end
 
 timer.start(1/FPS)
