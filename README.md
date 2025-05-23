@@ -4,7 +4,8 @@
 
 XWiki is a portable knowledge source for the TI-nspire calculator series written in Lua. It compresses a short summary of the 1000 most vital articles in English Wikipedia.
 
-![alt text](https://github.com/leog314/XWiki/blob/main/build/wiki.gif?raw=true)
+![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true) ![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki1.png?raw=true)
+![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki2.png?raw=true) ![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki3.png?raw=true)
 
 ## **Input and Controls:**
 
@@ -25,7 +26,7 @@ If you want to load articles that you find interesting, just modify the contents
 For next step you'll need some python libraries:
 
     pip install wikipedia-api nltk
-    
+
 Then execute the source/creator.py file. Once this program ran through all of the articles, which might take a while, the contents of source/database.lua should have changed.
 After that you only need to run the source/combiner.sh script and you will find a new wiki.tns file in the build directory.
 In summary use something like this:
