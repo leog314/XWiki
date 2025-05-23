@@ -1,16 +1,12 @@
 # **Wikipedia comes to your calculator!**
 
+<img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true" width="500">
+
 ## **General:**
 
 XWiki is a portable knowledge source for the TI-nspire calculator series written in Lua. It compresses a short summary of the 1000 most vital articles in English Wikipedia.
 
-<div style="display: flex; align-items: center;">
-  <img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true" width="320" style="margin-right: 100px;">
-  <img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki1.png?raw=true" width="320">
-</div>
-
-
-![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki2.png?raw=true)          ![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki3.png?raw=true)
+<img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki1.png?raw=true" width="320"> <img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki2.png?raw=true" width="320"> <img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki3.png?raw=true" width="320">
 
 ## **Input and Controls:**
 
