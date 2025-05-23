@@ -1,10 +1,12 @@
-**General:**
+##**WIKIPEDIA COMES TO THE CALCULATOR!**
+
+#**General:**
 
 XWiki is a portable knowledge source for the TI-nspire calculator series written in Lua.
 
 ![alt text](https://github.com/leog314/XWiki/blob/main/build/wiki.gif?raw=true)
 
-**Input and Controlls:**
+#**Input and Controlls:**
 
 To search something use the keypad for typing in the article name. After that press "enter" or use the handheld's cursor to select an article.
 You will be redirected to the article, if it's available, otherwise the most promissing page will open.
