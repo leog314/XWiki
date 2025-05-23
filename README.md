@@ -4,8 +4,7 @@
 
 XWiki is a portable knowledge source for the TI-nspire calculator series written in Lua. It compresses a short summary of the 1000 most vital articles in English Wikipedia.
 
-<img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true" width="200" style="margin-right: 20px;">
-<img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki1.png?raw=true" width="200">
+<img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true" width="320" style="margin-right: 20px;"> <img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki1.png?raw=true" width="320">
 
 ![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki2.png?raw=true)          ![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki3.png?raw=true)
 
