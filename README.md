@@ -23,22 +23,27 @@ Characters (in the search bar) can be deleted using "del" (deletes last char) or
 
 ## **Cleanbuilding the project**
 
-If you want to load articles that you find interesting, just modify the contents of source/articles.txt. Make sure that every keyword in that file is the title of an **actual** Wikipedia article.
-For next step you'll need some python libraries:
+If you want to load articles that you find more interesting, just modify the content of source/articles.txt. Make sure that every keyword in that file is the title of an **actual** Wikipedia article.
+
+For the next step you'll need some python libraries installed:
 
     pip install wikipedia-api nltk
 
-Then execute the source/creator.py file. Once this program ran through all of the articles, which might take a while, the contents of source/database.lua should have changed.
+With this execute the source/creator.py file. Once the program finished, which might take a while, the contents of source/database.lua should have changed.
+
 After that you only need to run the source/combiner.sh script and you will find a new wiki.tns file in the build directory.
+
+Transfer it to your calculator and have fun!
+
 In summary use something like this:
 
     # Modify source/articles.txt by adding valid article names
     python creator.py
-    # ...wait until the program finishes
+    # ... wait until the program finishes
     source/combiner.sh
-    # transfer wiki.tns to your calculator and have fun :)
+    # transfer wiki.tns to your calculator and enjoy reading :)
 
-Note: This was only tested on Linux.
+Note: **This was only tested on Linux and won't work in the same (but in a similiar) way on Windows.**
 
 ## **Last remarks**
 
@@ -47,3 +52,5 @@ The project is open source, you can load your own articles and modify the GUI, i
 Anyway, I am not in any means responsible for the contents of this wiki nor of it's modifications. While discusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!
 
 *This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.*
+
+**Work is still in progress!**
