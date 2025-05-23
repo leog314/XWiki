@@ -6,7 +6,7 @@ XWiki is a portable knowledge source for the TI-nspire calculator series written
 
 ![alt text](https://github.com/leog314/XWiki/blob/main/build/wiki.gif?raw=true)
 
-## **Input and Controlls:**
+## **Input and Controls:**
 
 To search something use the keypad for typing in the article name. After that press "enter" or use the handheld's cursor to select an article.
 You will be redirected to the article, if it's available, otherwise the most promissing page will open.
@@ -19,10 +19,29 @@ Switch back to the homescreen by pressing "esc".
 You can change the background color (=switch to dark/light mode) using "tab".
 Characters (in the search bar) can be deleted using "del" (deletes last char) or "clear" (clears the search bar).
 
-Note: I am aware that not everything might work as expected, work is still in progress. I hope that the app reacts fine anyway. :)
+## **Cleanbuilding the project**
+
+If you want to load articles that you find interesting, just modify the contents of source/articles.txt. Make sure that every keyword in that file is the title of an **actual** Wikipedia article.
+For next step you'll need some python libraries:
+
+    pip install wikipedia-api nltk
+    
+Then execute the source/creator.py file. Once this program ran through all of the articles, which might take a while, the contents of source/database.lua should have changed.
+After that you only need to run the source/combiner.sh script and you will find a new wiki.tns file in the build directory.
+In summary use something like this:
+
+    # Modify source/articles.txt by adding valid article names
+    python creator.py
+    # ...wait until the program finishes
+    source/combiner.sh
+    # transfer wiki.tns to your calculator and have fun :)
+
+Note: This was only tested on Linux.
+
+## **Last remarks**
 
 The project is open source, you can load your own articles and modify the GUI, if you want to. Please just mention this project, if you do so.
 
 Anyway, I am not in any means responsible for the contents of this wiki nor of it's modifications. While discusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!
 
-This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.
+*This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.*
