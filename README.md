@@ -21,7 +21,7 @@ Switch back to the homescreen by pressing "esc".
 You can change the background color (=switch to dark/light mode) using "tab".
 Characters (in the search bar) can be deleted using "del" (deletes last char) or "clear" (clears the search bar).
 
-## **Cleanbuilding the project**
+## **Recompiling the project (add articles)**
 
 If you want to load articles that you find more interesting, just modify the content of source/articles.txt. Make sure that every keyword in that file is the title of an **actual** Wikipedia article.
 
