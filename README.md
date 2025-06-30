@@ -1,6 +1,6 @@
 # **Wikipedia comes to your calculator!**
 
-![](https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true)
+<img src="https://github.com/leog314/image-generation-of-the-Mandelbrot-set/blob/main/images/mandelbrot_scaled.png?raw=true" width="400">
 
 ## **General:**
 
