@@ -12,9 +12,9 @@
 platform.apiLevel = "2.0"
 
 local BUILD_NUMBER = "v6/25"
-local FPS = 60 -- due to an internal ti bug, will interfere with proper restart of the app if set FPS > 10
+local FPS = 20 -- due to an internal ti bug, will interfere with proper restart under certain conditions
 
-local VERTICAL_ANIMATION_TIME = 0.25
+local VERTICAL_ANIMATION_TIME = 0.5
 
 -- fix of TI Bug....
 
@@ -636,7 +636,7 @@ function HelpScreen:init()
     self.editor:setTextColor(0x0a0a0a)
 
     self.editor:setText(
-    "XWiki is a portable knowledge source for the TI-nspire calculator series created by Leonard Großmann (2025).\n"..
+    "XWiki is a portable knowledge source for the TI-Nspire calculator series created by Leonard Großmann (2025).\n"..
     "To search for something use the keypad for typing in the article name. After that press <enter> or use the handheld's cursor to select an article.\n"..
     "You will be redirected to the article, if it's available, otherwise the most promissing page will open.\n" ..
     "By pressing the <return> key you get redirected to a randomly chosen article.\n"..
