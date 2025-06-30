@@ -1,6 +1,6 @@
 # **Wikipedia comes to your calculator!**
 
-<img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true" width="400">
+![](https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true)
 
 ## **General:**
 
@@ -10,12 +10,12 @@ XWiki is a portable knowledge source for the TI-nspire calculator series written
 
 ## **Input and Controls:**
 
-To search something use the keypad for typing in the article name. After that press "enter" or use the handheld's cursor to select an article.
-You will be redirected to the article, if it's available, otherwise the most promissing page will open.
+To search for something use the keypad for typing in the article name. After that press "enter" or use the handheld's cursor to select an article.
+You will be redirected to the article, if it's available, otherwise the most promising page will open.
 
 By pressing the "return" key you get redirected to a randomly chosen article.
 
-Any page consists of a text editor, where you can read the content of the article. Usually the content is a five sentence summary of the Wikipedia article.
+Any page consists of a text editor, where you can read the content of the article. Usually the content is a five-sentence summary of the Wikipedia article.
 Switch back to the homescreen by pressing "esc".
 
 You can change the background color (=switch to dark/light mode) using "tab".
@@ -29,7 +29,7 @@ For the next step you'll need some python libraries installed:
 
     pip install wikipedia-api nltk
 
-With this execute the source/creator.py file. Once the program finished, which might take a while, the contents of source/database.lua should have changed.
+With this execute the source/creator.py file. Once the program finishes, which might take a while, the contents of source/database.lua should have changed.
 
 After that you only need to run the source/combiner.sh script and you will find a new wiki.tns file in the build directory.
 
@@ -43,13 +43,13 @@ In summary use something like this:
     source/combiner.sh
     # transfer wiki.tns to your calculator and enjoy reading :)
 
-Note: **This was only tested on Linux and won't work in the same (but in a similiar) way on Windows.**
+Note: **This was only tested on Linux and won't work in the same (but in a similar) way on Windows.**
 
 ## **Last remarks**
 
 The project is open source, you can load your own articles and modify the GUI, if you want to. Please just mention this project, if you do so.
 
-Anyway, I am not in any means responsible for the contents of this wiki nor of it's modifications. While discusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!
+Anyway, I am not in any way responsible for the contents of this wiki nor of its modifications. While disgusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!
 
 *This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.*
 

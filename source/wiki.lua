@@ -3,6 +3,8 @@
 -- by Leonard Großmann ------------------
 -- 3/2/2025 -----------------------------
 -----------------------------------------
+--- https://github.com/leog314/XWiki ----
+-----------------------------------------
 
 -- Using BetterLuaAPI for the TI-Nspire
 -- Thanks to adriweb + contributors
@@ -10,7 +12,7 @@
 platform.apiLevel = "2.0"
 
 local BUILD_NUMBER = "v6/25"
-local FPS = 10
+local FPS = 60 -- due to an internal ti bug, will interfere with proper restart of the app if set FPS > 10
 
 local VERTICAL_ANIMATION_TIME = 0.25
 
@@ -635,7 +637,7 @@ function HelpScreen:init()
 
     self.editor:setText(
     "XWiki is a portable knowledge source for the TI-nspire calculator series created by Leonard Großmann (2025).\n"..
-    "To search something use the keypad for typing in the article name. After that press <enter> or use the handheld's cursor to select an article.\n"..
+    "To search for something use the keypad for typing in the article name. After that press <enter> or use the handheld's cursor to select an article.\n"..
     "You will be redirected to the article, if it's available, otherwise the most promissing page will open.\n" ..
     "By pressing the <return> key you get redirected to a randomly chosen article.\n"..
     "Any page consists of a text editor, where you can read the content of the article. Usually the content is a five sentence summary of the Wikipedia article.\n"..
@@ -646,7 +648,7 @@ function HelpScreen:init()
     "\thttps://github.com/leog314/XWiki\n"..
     "Note: I am aware that not everything might work as expected, work is still in progress. I hope that the app reacts fine anyway. :)\n"..
     "The project is open source, you can load your own articles and modify the GUI, if you want to. Please just mention this project, if you do so.\n"..
-    "Anyway, I am not in any means responsible for the contents of this wiki nor of it's modifications. While discusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!\n"..
+    "Anyway, I am not in any means responsible for the contents of this wiki nor of its modifications. While disgusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!\n"..
     "This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.", 0
 )
     self.editor:registerFilter {
