@@ -1,6 +1,6 @@
 # **Wikipedia comes to your calculator!**
 
-![alt text](https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true)
+<img src="https://github.com/leog314/XWiki/blob/main/build/media/wiki.gif?raw=true" width="400">
 
 ## **General:**
 
