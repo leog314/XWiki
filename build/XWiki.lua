@@ -1055,12 +1055,12 @@ database['Injury'] = 'Injury is physiological damage to the living tissue of any
 -- Using BetterLuaAPI for the TI-Nspire
 -- Thanks to adriweb + contributors
 
--- platform.apiLevel = "2.0"
+platform.apiLevel = "2.0"
 
-local BUILD_NUMBER = "v5/25"
-local FPS = 100
+local BUILD_NUMBER = "v6/25"
+local FPS = 10
 
-local VERTICAL_ANIMATION_TIME = 0.1
+local VERTICAL_ANIMATION_TIME = 0.25
 
 -- fix of TI Bug....
 
@@ -1184,12 +1184,16 @@ colors["bar-universal"] = {48, 213, 200}
 colors["rect"] = {10, 10, 10}
 colors["rect-activated"] = {48, 213, 200}
 local white_mode = false
+-- if white_mode then cursor.set("default") else cursor.set("hollow pointer") end
 
 local images = {}
 images["settings-icon-white_mode"] = "\018\000\000\000\018\000\000\000\000\000\000\000\036\000\000\000\016\000\001\000alalal\1401alalalJ\169J\169J\169J\169al\1401al\1401\255\127alalalal\1401J\169J\169\181VJ\169J\169J\169J\169J\169J\169\1401J\169J\169\1401\255\127alal\1401J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169\1401al\1401J\169J\169J\169J\169J\169J\169J\169\181V\181VJ\169J\169J\169J\169J\169J\169J\169\1401alJ\169J\169J\169J\169J\169\1735alalalal\1735J\169J\169J\169J\169J\169alal\1401J\169J\169J\169alalalJ\169J\169alalalJ\169J\169J\169\1401al\1401J\169J\169J\169\1735alJ\169J\169J\169J\169J\169J\169al\181VJ\169J\169J\169\1401J\169J\169J\169J\169alalJ\169J\169alalJ\169J\169al\181VJ\169J\169J\169J\169J\169J\169J\169\1735alJ\169J\169alalalalJ\169J\169al\1735J\169J\169J\169J\169J\169J\169\1735alJ\169J\169alalalalJ\169J\169al\1735J\169J\169J\169J\169J\169J\169J\169alalJ\169J\169alalJ\169J\169alalJ\169J\169J\169J\169\1401J\169J\169J\169\1735alJ\169J\169J\169J\169J\169J\169al\1735J\169J\169J\169\1401al\1401J\169J\169J\169alalalJ\169J\169alalalJ\169J\169J\169\1401alalJ\169J\169J\169J\169J\169\1735alalalal\1735J\169J\169J\169J\169J\169al\1401J\169J\169J\169J\169J\169J\169J\169\1735\1735J\169J\169J\169J\169J\169J\169J\169\1401\1401\1401J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169J\169\1401\255\127al\255\127\1401J\169J\169\1401J\169J\169J\169J\169J\169J\169\1401J\169J\169\1401\255\127alalalal\1401alalalJ\169J\169J\169J\169\1401alal\1401\255\127alal"
 images["settings-icon-dark_mode"] = "\018\000\000\000\018\000\000\000\000\000\000\000\036\000\000\000\016\000\001\000alalal\1401alalal\181\214\181\214\181\214\181\214al\1401al\1401\255\127alalalal\1401\181\214\181\214\181V\181\214\181\214\181\214\181\214\181\214\181\214\1401\181\214\181\214\1401\255\127alal\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181V\181V\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401al\181\214\181\214\181\214\181\214\181\214\1735alalalal\1735\181\214\181\214\181\214\181\214\181\214alal\1401\181\214\181\214\181\214alalal\181\214\181\214alalal\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214\1735al\181\214\181\214\181\214\181\214\181\214\181\214al\181V\181\214\181\214\181\214\1401\181\214\181\214\181\214\181\214alal\181\214\181\214alal\181\214\181\214al\181V\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1735al\181\214\181\214alalalal\181\214\181\214al\1735\181\214\181\214\181\214\181\214\181\214\181\214\1735al\181\214\181\214alalalal\181\214\181\214al\1735\181\214\181\214\181\214\181\214\181\214\181\214\181\214alal\181\214\181\214alal\181\214\181\214alal\181\214\181\214\181\214\181\214\1401\181\214\181\214\181\214\1735al\181\214\181\214\181\214\181\214\181\214\181\214al\1735\181\214\181\214\181\214\1401al\1401\181\214\181\214\181\214alalal\181\214\181\214alalal\181\214\181\214\181\214\1401alal\181\214\181\214\181\214\181\214\181\214\1735alalalal\1735\181\214\181\214\181\214\181\214\181\214al\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1735\1735\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401\1401\1401\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\181\214\1401\255\127al\255\127\1401\181\214\181\214\1401\181\214\181\214\181\214\181\214\181\214\181\214\1401\181\214\181\214\1401\255\127alalalal\1401alalal\181\214\181\214\181\214\181\214\1401alal\1401\255\127alal"
 
 local setting_icon = {x=0.98*pww()-18, y=0.09*pwh()-9, size=18}
+
+toolpalette.enableCopy(true)
+toolpalette.enablePaste(true)
 
 -- clipping function
 
@@ -1335,6 +1339,15 @@ function ScreenHandler:help()
     if self.newScreen==nil then self.currentScreen.screen:help() end
 end
 
+function ScreenHandler:copy()
+    if self.newScreen==nil then self.currentScreen.screen:copy() end
+end
+
+function ScreenHandler:paste()
+    if self.newScreen==nil then self.currentScreen.screen:paste() end
+end
+
+
 -----------------------------------------
 -------------- Screen classes -----------
 -----------------------------------------
@@ -1429,7 +1442,7 @@ function HomeScreen:updateSearch()
         local new_articles={}
 
         for key,_ in pairs(database) do
-            if string.find(string.lower(key), string.lower(self.search_bar.text)) then -- content is substring of key?
+            if string.find(string.lower(key), string.lower(self.search_bar.text), 1, true) then -- content is substring of key?
                 if #new_articles < self.max_entries then -- table still not full
                     table.insert(new_articles, key)
                 else
@@ -1536,6 +1549,15 @@ function HomeScreen:help()
     Handler:push(HelpScreen(), "down")
 end
 
+function HomeScreen:copy()
+    return
+end
+
+function HomeScreen:paste()
+    if self.search_bar.text ~= self.placeholder then self.search_bar.text = self.search_bar.text .. clipboard.getText() else self.search_bar.text=clipboard.getText() end
+    self:updateSearch()
+end
+
 ----------- "TextScreen" class ----------
 
 ReadScreen = class()
@@ -1552,7 +1574,7 @@ function ReadScreen:init(keyword)
 
     self.editor:setTextColor(0x0a0a0a) -- no if here, because can not change background color of D2Editor -> ~Thanks TI :)
 
-    self.editor:setText(database[self.keyword], 1)
+    self.editor:setText(database[self.keyword], 0)
 
     self.editor:registerFilter {
         enterKey = function()
@@ -1636,6 +1658,15 @@ function ReadScreen:help()
     Handler:push(HelpScreen(), "down")
 end
 
+function ReadScreen:copy()
+    local string, pos, sel, error = self.editor:getExpressionSelection()
+    clipboard.addText(string:sub(sel, pos))
+end
+
+function ReadScreen:paste()
+    return
+end
+
 -- Help Screen
 
 HelpScreen = class()
@@ -1664,7 +1695,7 @@ function HelpScreen:init()
     "Note: I am aware that not everything might work as expected, work is still in progress. I hope that the app reacts fine anyway. :)\n"..
     "The project is open source, you can load your own articles and modify the GUI, if you want to. Please just mention this project, if you do so.\n"..
     "Anyway, I am not in any means responsible for the contents of this wiki nor of it's modifications. While discusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!\n"..
-    "This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.", 1
+    "This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.", 0
 )
     self.editor:registerFilter {
         enterKey = function()
@@ -1742,15 +1773,23 @@ function HelpScreen:help()
     return
 end
 
--- global stuff
-
-function on.construction()
-    timer.start(1/FPS)
-    Handler = ScreenHandler(HomeScreen())
+function HelpScreen:copy()
+    local string, pos, sel, error = self.editor:getExpressionSelection()
+    clipboard.addText(string:sub(sel, pos))
 end
 
-function on.resize(w, h)
+function HelpScreen:paste()
+    return
+end
+
+-- global stuff
+
+function on.activate()
     timer.start(1/FPS)
+end
+
+function on.construction()
+    Handler = ScreenHandler(HomeScreen())
 end
 
 function on.paint(gc)
@@ -1764,6 +1803,7 @@ end
 
 function on.tabKey()
     white_mode = not white_mode
+    -- if white_mode then cursor.set("default") else cursor.set("hollow pointer") end
 end
 
 function on.mouseDown(x, y)
@@ -1802,4 +1842,10 @@ function on.help()
     Handler:help()
 end
 
-timer.start(1/FPS)
+function on.copy()
+    Handler:copy()
+end
+
+function on.paste()
+    Handler:paste()
+end
