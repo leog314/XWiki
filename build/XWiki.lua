@@ -1060,7 +1060,7 @@ database['Injury'] = 'Injury is physiological damage to the living tissue of any
 platform.apiLevel = "2.0"
 
 local BUILD_NUMBER = "v6/25"
-local FPS = 20 -- due to an internal ti bug, will interfere with proper restart under certain conditions
+local FPS = 15 -- due to an internal ti bug, will interfere with proper restart under certain conditions
 
 local VERTICAL_ANIMATION_TIME = 0.5
 
@@ -1781,7 +1781,7 @@ function HelpScreen:copy()
 end
 
 function HelpScreen:paste()
-    return
+    return -- in the future
 end
 
 -- global stuff
