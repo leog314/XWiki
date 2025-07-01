@@ -28,6 +28,9 @@ AMD
 TI-BASIC
 Reverse engineering
 Mathematical software
+Chess
+Go (game)
+Neural network (machine learning)
 Anarchism
 Abraham Lincoln
 Aristotle

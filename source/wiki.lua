@@ -11,7 +11,7 @@
 
 platform.apiLevel = "2.0"
 
-local BUILD_NUMBER = "v6/25"
+local BUILD_NUMBER = "v7/25"
 local FPS = 15 -- due to an internal ti bug, will interfere with proper restart under certain conditions
 
 local VERTICAL_ANIMATION_TIME = 0.5
@@ -528,7 +528,15 @@ function ReadScreen:init(keyword)
 
     self.editor:setTextColor(0x0a0a0a) -- no if here, because can not change background color of D2Editor -> ~Thanks TI :)
 
-    self.editor:setText(database[self.keyword], 0)
+    local acknowledge_message = '\n\n---- License and Acknowledgement\n\n' ..
+    'This article is based on content from Wikipedia and is licensed under the Creative Commons Attribution-ShareAlike License (CC BY-SA 3.0).\n' ..
+    'The original article was written by Wikipedia contributors and can be found at the following URL:\n' ..
+    '\t\t' .. database[self.keyword].url .. '\n' ..
+    'Modifications may have been made by the author of this app. The full license text is available at:\n' ..
+    '\t\thttps://creativecommons.org/licenses/by-sa/3.0/'
+
+
+    self.editor:setText(database[self.keyword].content .. acknowledge_message, 0)
 
     self.editor:registerFilter {
         enterKey = function()
@@ -635,6 +643,17 @@ function HelpScreen:init()
 
     self.editor:setTextColor(0x0a0a0a)
 
+    local general_license_ack = '\n\n---- Licensing and Attribution Notice\n\n' ..
+    'This app uses content from Wikipedia, which is available under the Creative Commons Attribution-ShareAlike 3.0 License (CC BY-SA 3.0).\n' ..
+    'Some summaries and text shown in this app are based on original Wikipedia articles and may have been edited or condensed by the app author.\n' ..
+    'By using this app, you acknowledge that:\n' ..
+    '\t-The original content was created by Wikipedia contributors.\n' ..
+    '\t-Modifications may have been made to adapt the content.\n' ..
+    '\t-The full license is available at: https://creativecommons.org/licenses/by-sa/3.0/\n' ..
+    '\t-You can access the original articles and their edit history via the source links provided with each summary.\n\n' ..
+    'Wikipedia® is a trademark of the Wikimedia Foundation. This app is not affiliated with or endorsed by the Wikimedia Foundation.\n\n'..
+    "This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors."
+
     self.editor:setText(
     "XWiki is a portable knowledge source for the TI-Nspire calculator series created by Leonard Großmann (2025).\n"..
     "To search for something use the keypad for typing in the article name. After that press <enter> or use the handheld's cursor to select an article.\n"..
@@ -645,11 +664,11 @@ function HelpScreen:init()
     "You can change the background color (=switch to dark/light mode) using <tab>.\n"..
     "Characters (in the search bar) can be deleted using <del> (deletes last char) or <clear> (clears the search bar).\n"..
     "If you have any further questions/suggestions take a look on the Github repository:\n"..
-    "\thttps://github.com/leog314/XWiki\n"..
+    "\t\thttps://github.com/leog314/XWiki\n"..
     "Note: I am aware that not everything might work as expected, work is still in progress. I hope that the app reacts fine anyway. :)\n"..
     "The project is open source, you can load your own articles and modify the GUI, if you want to. Please just mention this project, if you do so.\n"..
-    "Anyway, I am not in any means responsible for the contents of this wiki nor of its modifications. While disgusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!\n"..
-    "This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.", 0
+    "Anyway, I am not in any means responsible for the contents of this wiki nor of its modifications. While disgusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!"..
+    general_license_ack, 0
 )
     self.editor:registerFilter {
         enterKey = function()

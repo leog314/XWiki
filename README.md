@@ -38,7 +38,7 @@ Transfer it to your calculator and have fun!
 In summary use something like this:
 
     # Modify source/articles.txt by adding valid article names
-    python creator.py
+    python source/creator.py
     # ... wait until the program finishes
     source/combiner.sh
     # transfer wiki.tns to your calculator and enjoy reading :)
@@ -51,6 +51,20 @@ The project is open source, you can load your own articles and modify the GUI, i
 
 Anyway, I am not in any way responsible for the contents of this wiki nor of its modifications. While disgusting content should have been filtered out to some degree, this isn't guaranteed. You use the app at your own risk!
 
-*This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.*
-
 **Work is still in progress!**
+
+## **Licensing and Attribution Notice**
+
+This app uses content from Wikipedia, which is available under the Creative Commons Attribution-ShareAlike 3.0 License (CC BY-SA 3.0).
+
+Some summaries and text shown in this app are based on original Wikipedia articles and may have been edited or condensed by the app author.
+
+By using this app, you acknowledge that:
+ - The original content was created by Wikipedia contributors.
+ - Modifications may have been made to adapt the content.
+ - The full license is available at: https://creativecommons.org/licenses/by-sa/3.0/
+ - You can access the original articles and their edit history via the source links provided with each summary.
+
+Wikipedia® is a trademark of the Wikimedia Foundation. This app is not affiliated with or endorsed by the Wikimedia Foundation.
+
+This project used 'Better Lua Api' by adriweb + contributors and Luna by Vogtinator + contributors.
