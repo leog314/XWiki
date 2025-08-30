@@ -1061,7 +1061,7 @@ database['Injury'] = {content='Injury is physiological damage to the living tiss
 
 platform.apiLevel = "2.0"
 
-local BUILD_NUMBER = "v8/25"
+local BUILD_NUMBER = "v9/25"
 local FPS = 15 -- due to an internal ti bug, will interfere with proper restart under certain conditions
 
 local VERTICAL_ANIMATION_TIME = 0.5
@@ -1845,12 +1845,15 @@ function on.construction()
 end
 
 function on.paint(gc)
+    gc:begin()
     Handler:paint(gc)
 end
 
 function on.timer()
     Handler:step()
-    screenRefresh()
+    -- screenRefresh()
+    platform.window:setFocus(false)
+    platform.window:setFocus(true)
 end
 
 function on.tabKey()

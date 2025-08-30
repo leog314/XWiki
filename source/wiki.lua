@@ -9,7 +9,7 @@
 -- Using BetterLuaAPI for the TI-Nspire
 -- Thanks to adriweb + contributors
 
-platform.apiLevel = "2.0"
+platform.apiLevel = "1.0"
 
 local BUILD_NUMBER = "v8/25"
 local FPS = 15 -- due to an internal ti bug, will interfere with proper restart under certain conditions
