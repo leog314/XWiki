@@ -11,7 +11,7 @@
 
 platform.apiLevel = "1.0"
 
-local BUILD_NUMBER = "v8/25"
+local BUILD_NUMBER = "v9/25"
 local FPS = 15 -- due to an internal ti bug, will interfere with proper restart under certain conditions
 
 local VERTICAL_ANIMATION_TIME = 0.5
@@ -44,11 +44,6 @@ function table.Length(t)
     return counter
 end
 
-function AddToGC(key, func)
-    local gcMetatable = platform.withGC(getmetatable)
-    gcMetatable[key] = func
-end
-
 local function copyTable(t)
     local t2 = {}
     for k, v in pairs(t) do
@@ -66,8 +61,8 @@ local function uInvertCol(col)
 end
 
 local function screenRefresh() return platform.window:invalidate() end
-local function pww() return platform.window:width() end
-local function pwh() return platform.window:height() end
+local function pww() return 320 end
+local function pwh() return 240 end
 
 local function drawCenteredString(gc, str)
     gc:drawString(str, (platform.window:width() - gc:getStringWidth(str)) / 2, platform.window:height() / 2, "middle")
@@ -110,17 +105,6 @@ local function fillRoundRect(gc, x, y, wd, ht, radius) -- wd = width and ht = he
     gc:fillArc(x, y, radius * 2, radius * 2, 85, 95)
     gc:fillArc(x, y + ht - (radius * 2), radius * 2, radius * 2, 180, 95)
 end
-
------------------------------------------
------- Adding the functions to gc -------
------------------------------------------
-
-AddToGC("drawRoundRect", drawRoundRect)
-AddToGC("fillRoundRect", fillRoundRect)
-AddToGC("verticalBar", verticalBar)
-AddToGC("horizontalBar", horizontalBar)
-AddToGC("drawCenteredString", drawCenteredString)
-AddToGC("drawXCenteredString", drawXCenteredString)
 
 local function inRect(px, py, x, y, dx, dy)
     return (x <= px) and (px <= x + dx) and (y <= py) and (py <= y + dy)
@@ -168,8 +152,6 @@ local function ClipString(gc, string, size, clip_start)
     end
     return string
 end
-
-AddToGC("ClipString", ClipString)
 
 -----------------------------------------
 -------------- Screen handler -----------
@@ -328,7 +310,7 @@ function HomeScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol({ 30, 30, 30 })) else gc:setColorRGB(uInvertCol({ 30, 30, 30 })) end -- logo
     gc:setFont("sansserif", "b", 24)
 
-    gc:drawXCenteredString("XWiki", self.shiftx, self.shifty)
+    drawXCenteredString(gc, "XWiki", self.shiftx, self.shifty)
 
     local img
     if white_mode then
@@ -341,7 +323,7 @@ function HomeScreen:paint(gc)
     gc:drawImage(img, self.shiftx + setting_icon.x, self.shifty + setting_icon.y)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.shifty + self.search_bar.y0 - 0.02 * pwh())
+    horizontalBar(gc, self.shifty + self.search_bar.y0 - 0.02 * pwh())
 
     if self.pointer ~= 0 then
         if white_mode then gc:setColorRGB(uCol(colors["rect"])) else gc:setColorRGB(uInvertCol(colors["rect"])) end -- search_bar
@@ -364,7 +346,7 @@ function HomeScreen:paint(gc)
     end
 
     gc:setFont("sansserif", "r", 11)
-    gc:drawString(gc:ClipString(self.search_bar.text, self.search_bar.x1 - self.search_bar.x0 - 0.02 * pww(), true),
+    gc:drawString(ClipString(gc, self.search_bar.text, self.search_bar.x1 - self.search_bar.x0 - 0.02 * pww(), true),
         self.shiftx + self.search_bar.x0 + 0.01 * pww(),
         self.shifty + self.search_bar.y0 + (self.search_bar.y1 - self.search_bar.y0) / 2, "middle")
 
@@ -384,7 +366,7 @@ function HomeScreen:paint(gc)
             gc:setFont("sansserif", "b", 12)
             if white_mode then gc:setColorRGB(uCol(colors["text"])) else gc:setColorRGB(uInvertCol(colors["text"])) end
 
-            gc:drawString(gc:ClipString(keyword, self.search_bar.x1 - self.search_bar.x0 - 0.02 * pww(), false),
+            gc:drawString(ClipString(gc, keyword, self.search_bar.x1 - self.search_bar.x0 - 0.02 * pww(), false),
                 self.shiftx + self.search_bar.x0 + 0.01 * pww(), self.shifty + y + self.article_box_height / 2, "middle")
 
             y = y + math.round(self.article_box_height)
@@ -392,12 +374,12 @@ function HomeScreen:paint(gc)
     end
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.shifty + 0.92 * pwh())
+    horizontalBar(gc, self.shifty + 0.92 * pwh())
 
     gc:setFont("serif", "i", 7)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
-    gc:drawXCenteredString("by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95 * pwh())
+    drawXCenteredString(gc, "by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95 * pwh())
 
     gc:drawString(BUILD_NUMBER, self.shiftx + 0.02 * pww(), self.shifty + 0.95 * pwh(), "top")
 end
@@ -572,7 +554,7 @@ function ReadScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol({ 30, 30, 30 })) else gc:setColorRGB(uInvertCol({ 30, 30, 30 })) end -- logo
     gc:setFont("sansserif", "i", 12)
 
-    gc:drawXCenteredString(gc:ClipString(self.keyword, 0.7 * pww(), false), self.shiftx,
+    drawXCenteredString(gc, ClipString(gc, self.keyword, 0.7 * pww(), false), self.shiftx,
         self.shifty + self.editor_params.y0 / 2 - gc:getStringHeight(self.keyword) / 2)
 
     local img
@@ -586,17 +568,17 @@ function ReadScreen:paint(gc)
     gc:drawImage(img, self.shiftx + setting_icon.x, self.shifty + setting_icon.y)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.shifty + self.editor_params.y0 - 0.02 * pwh())
+    horizontalBar(gc, self.shifty + self.editor_params.y0 - 0.02 * pwh())
 
     self.editor:move(self.editor_params.x0 + self.shiftx, self.editor_params.y0 + self.shifty)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.shifty + self.editor_params.y1 + 0.02 * pwh())
+    horizontalBar(gc, self.shifty + self.editor_params.y1 + 0.02 * pwh())
 
     gc:setFont("serif", "i", 7)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
-    gc:drawXCenteredString("by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95 * pwh())
+    drawXCenteredString(gc, "by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95 * pwh())
 
     gc:drawString(BUILD_NUMBER, self.shiftx + 0.02 * pww(), self.shifty + 0.95 * pwh(), "top")
 end
@@ -710,7 +692,7 @@ function HelpScreen:paint(gc)
     if white_mode then gc:setColorRGB(uCol({ 30, 30, 30 })) else gc:setColorRGB(uInvertCol({ 30, 30, 30 })) end
     gc:setFont("sansserif", "b", 12)
 
-    gc:drawXCenteredString("Controls and Help", self.shiftx,
+    drawXCenteredString(gc, "Controls and Help", self.shiftx,
         self.shifty + self.editor_params.y0 / 2 - gc:getStringHeight("Controls and Help") / 2)
 
     local img
@@ -724,17 +706,17 @@ function HelpScreen:paint(gc)
     gc:drawImage(img, self.shiftx + setting_icon.x, self.shifty + setting_icon.y)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.shifty + self.editor_params.y0 - 0.02 * pwh())
+    horizontalBar(gc, self.shifty + self.editor_params.y0 - 0.02 * pwh())
 
     self.editor:move(self.editor_params.x0 + self.shiftx, self.editor_params.y0 + self.shifty)
 
     gc:setColorRGB(uCol(colors["bar-universal"]))
-    gc:horizontalBar(self.shifty + self.editor_params.y1 + 0.02 * pwh())
+    horizontalBar(gc, self.shifty + self.editor_params.y1 + 0.02 * pwh())
 
     gc:setFont("serif", "i", 7)
     if white_mode then gc:setColorRGB(uCol(colors["placeholder"])) else gc:setColorRGB(uInvertCol(colors["placeholder"])) end
 
-    gc:drawXCenteredString("by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95 * pwh())
+    drawXCenteredString(gc, "by Leonard Großmann (2025)", self.shiftx, self.shifty + 0.95 * pwh())
 
     gc:drawString(BUILD_NUMBER, self.shiftx + 0.02 * pww(), self.shifty + 0.95 * pwh(), "top")
 end
@@ -790,17 +772,21 @@ function on.activate()
     timer.start(1 / FPS)
 end
 
-function on.construction()
+function on.create()
     Handler = ScreenHandler(HomeScreen())
 end
 
 function on.paint(gc)
+    gc:begin()
     Handler:paint(gc)
 end
 
 function on.timer()
     Handler:step()
-    screenRefresh()
+
+    platform.window:setFocus(false)
+    platform.window:setFocus(true)
+    -- screenRefresh()
 end
 
 function on.tabKey()
