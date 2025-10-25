@@ -162,21 +162,17 @@ Color = {
 ------------ Actual Floa GUI ------------
 -----------------------------------------
 
-Button = class()
+Box = class() -- a Box describes any rectangular-like area, where you can put texts, sprites or symbols in
 
-function Button:init(text, x, y, margin, radius, wd, ht, text_color, text_alignment, background_color, border_color,
-                     border_thickness)
+function Box:init(text, x, y, wd, ht, radius, text_color, text_alignment, background_color, border_color,
+                  border_thickness)
     self.text = text
 
-    local GetParameters = function(str, gc) return gc:getStringWidth(str), gc:getStringHeight(str) end
-    self.text_wd, self.text_ht = platform.withGC(GetParameters, self.text)
-
     self.x, self.y = x,
-        y                 -- upper left corner of the corresponding rectangle
+        y -- upper left corner of the corresponding rectangle
 
-    if margin ~= nil then self.margin = margin else self.margin = 2 end
-    if wd ~= nil then self.wd = wd else self.wd = self.text_wd + 2 * self.margin end                             -- width -> default: text width + small margin declared above
-    if ht ~= nil then self.ht = ht else self.ht = self.text_ht + 2 * self.margin end                             -- height -> default: text height + small margin declared above
+    self.wd, self.ht = wd,
+        ht                                                                                                       -- must be included!
 
     if radius ~= nil then self.rd = radius else self.rd = 0 end                                                  -- default: rectangular button
 
@@ -187,12 +183,69 @@ function Button:init(text, x, y, margin, radius, wd, ht, text_color, text_alignm
     self.borderless = (border_color == nil or border_thickness == nil)                                           -- both values need to be set in order to have a border
     if not self.borderless then
         self.border_color =
-        border_color                                                                                             -- default value: borderless
+            border_color     -- default value: borderless
         self.border_th =
-        border_thickness                                                                                         -- default value: 0
+            border_thickness -- default value: 0
     else
         self.border_th = 0
     end
+end
+
+function Box:paint(gc)
+    if not borderless then
+        gc:setRGB(self.border_color)
+        gc:fillRoundRect(self.x, self.y, self.wd, self.ht, self.rd)
+    end
+    gc:setRGB(self.bg_color)
+    gc:fillRoundRect(self.x + self.border_th, self.y + self.border_th, self.wd, self.ht, self.rd)
+
+    gc:setRGB(self.text_color)
+    if self.text_almt == "left" then
+        gc:drawString(self.text, self.x + self.border_th + self.margin, self.y + self.border_th + self.margin, "top")
+    else
+        gc:drawString(self.text, self.x - self.text_wd / 2, self.y, "middle")
+    end
+end
+
+Button = class() -- a button is an automatically generated box based on margin and text dimensions
+
+function Button:init(text, x, y, margin, radius, text_color, background_color, border_color, border_thickness)
+    self.text = text
+    self.x, self.y = x, y -- upper left corner of the corresponding rectangle
+
+    local GetParameters = function(str, gc) return gc:getStringWidth(str), gc:getStringHeight(str) end
+    self.text_wd, self.text_ht = platform.withGC(GetParameters, self.text)
+
+    if margin ~= nil then self.margin = margin else self.margin = 2 end
+
+    self.wd = self.text_wd +
+        2 *
+        self
+        .margin -- width -> default: text width + small margin declared above
+    self.ht = self.text_ht +
+        2 *
+        self
+        .margin                                                                                                  -- height -> default: text height + small margin declared above
+
+    if radius ~= nil then self.rd = radius else self.rd = 0 end                                                  -- default: rectangular button
+
+    if text_color ~= nil then self.text_color = text_color else self.text_color = RGB(0, 0, 0) end               -- default: black
+    self.text_almt = "left"
+    if background_color ~= nil then self.bg_color = background_color else self.bg_color = RGB(255, 255, 255) end -- default: white
+
+    self.borderless = (border_color == nil or border_thickness == nil)                                           -- both values need to be set in order to have a border
+    if not self.borderless then
+        self.border_color =
+            border_color     -- default value: borderless
+        self.border_th =
+            border_thickness -- default value: 0
+    else
+        self.border_th = 0
+    end
+
+    self.Box = Box(self.text, self.x, self.y, self.wd, self.ht, self.rd, self.text_color, self.text_almt, self.bg_color,
+        self.border_color,
+        self.border_th) -- final call :)
 end
 
 function Button:paint(gc)
@@ -205,7 +258,7 @@ function Button:paint(gc)
 
     gc:setRGB(self.text_color)
     if self.text_almt == "left" then
-        gc:drawString(self.text, self.x + self.border_th + self.margin, self.y + self.border_th + self.margin, "middle")
+        gc:drawString(self.text, self.x + self.border_th + self.margin, self.y + self.border_th + self.margin, "top")
     else
         gc:drawString(self.text, self.x - self.text_wd / 2, self.y, "middle")
     end
